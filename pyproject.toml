@@ -1,0 +1,10 @@
+[project]
+name = "labo2"
+version = "0.1.0"
+description = "Traitement et ressources pour le laboratoire 2"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.3",
+]
