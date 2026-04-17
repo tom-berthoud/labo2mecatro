@@ -1,0 +1,109 @@
+\section{Modèle théorique}
+
+\subsection{Principe de l'actionneur à bobine mobile}
+
+Un actionneur à bobine mobile est constitué d'un aimant permanent générant un champ magnétique radial constant et d'une bobine solidaire d'un axe rotatif. Lorsqu'un courant \(i\) traverse la bobine, la force de Laplace crée un couple moteur proportionnel à \(i\). Un ressort de torsion assure le rappel vers la position nulle et limite la déflexion.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=Stealth]
+% Bloc électrique
+\draw[thick, rounded corners=4pt] (0,0) rectangle (3.2,2.2);
+\node[align=center] at (1.6,1.5) {\small Circuit};
+\node[align=center] at (1.6,0.9) {\small électrique};
+\node[font=\scriptsize] at (1.6,0.35) {\(R,\, L\)};
+% Bloc mécanique
+\draw[thick, rounded corners=4pt] (5.8,0) rectangle (9,2.2);
+\node[align=center] at (7.4,1.5) {\small Système};
+\node[align=center] at (7.4,0.9) {\small mécanique};
+\node[font=\scriptsize] at (7.4,0.35) {\(J,\, C_v,\, K_r\)};
+% Flèches et couplage
+\draw[->] (-1.2,1.1) -- (0,1.1) node[midway,above]{\small \(u\)};
+\draw[->] (3.2,1.4) -- (5.8,1.4) node[midway,above]{\small \(K_t \cdot i\)};
+\draw[->] (5.8,0.8) -- (3.2,0.8) node[midway,below]{\small \(K_u \cdot \dot{\alpha}\)};
+\draw[->] (9,1.1) -- (10.2,1.1) node[midway,above]{\small \(\alpha\)};
+\end{tikzpicture}
+\caption{Schéma bloc de l'actionneur à bobine mobile}
+\label{fig:schema_bloc}
+\end{figure}
+
+\subsection{Équations de mouvement}
+
+\subsubsection{Équation électrique}
+
+La loi des mailles sur le circuit de la bobine donne :
+\[
+u(t) = R\,i(t) + L\,\frac{di}{dt} + K_u\,\dot{\alpha}(t)
+\]
+où le terme \(K_u\,\dot{\alpha}\) est la force contre-électromotrice (f.c.e.m.) induite par le déplacement angulaire.
+
+\subsubsection{Équation mécanique}
+
+Le principe fondamental de la dynamique en rotation s'écrit :
+\[
+J\,\ddot{\alpha}(t) = K_t\,i(t) - C_v\,\dot{\alpha}(t) - K_r\,\alpha(t)
+\]
+Le couple moteur \(K_t \cdot i\) est contrebalancé par le frottement visqueux \(C_v\,\dot{\alpha}\) et le rappel élastique \(K_r\,\alpha\).
+
+\paragraph{Hypothèse \(K_u = K_t\) en unités SI.}
+Par le théorème de réciprocité des transducteurs linéaires, la constante de f.c.e.m. et la constante de couple sont égales en unités SI : \(K_u = K_t = K\).
+
+\subsection{Stratégie d'identification}
+\label{sec:strat_ident}
+
+Les six paramètres sont identifiés séquentiellement à partir de trois essais.
+
+\subsubsection{EX1 — Réponse indicielle : \texorpdfstring{\(R\)}{R} et \texorpdfstring{\(L\)}{L}}
+
+Lorsque l'actionneur est maintenu immobile (\(\dot{\alpha}=0\)), la f.c.e.m. est nulle. L'équation électrique devient :
+\[
+u(t) = R\,i(t) + L\,\frac{di}{dt}.
+\]
+En réponse à un échelon \(u_0\), le courant suit une exponentielle :
+\[
+i(t) = \frac{u_0}{R}\left(1 - e^{-t/\tau}\right), \quad \tau = \frac{L}{R}.
+\]
+L'état stationnaire donne \(R = \Delta u / \Delta i_{\infty}\) et la constante de temps donne \(L = R\tau\).
+
+\subsubsection{EX2 — Bobine ouverte : \texorpdfstring{\(d,\,\omega_0,\,K_u\)}{d, w0, Ku}}
+
+Lorsque la bobine est en circuit ouvert (\(i=0\)), l'équation mécanique se réduit à :
+\[
+J\,\ddot{\alpha} + C_v\,\dot{\alpha} + K_r\,\alpha = 0.
+\]
+La solution pour des conditions initiales \(\alpha(0) = \Delta\alpha_{\max}\), \(\dot{\alpha}(0)=0\) est :
+\[
+\alpha(t) = \Delta\alpha_{\max}\,e^{-d\,t}\cos(\omega_d\,t),
+\]
+avec \(d = C_v/(2J)\), \(\omega_d = \sqrt{\omega_0^2 - d^2}\) et \(\omega_0^2 = K_r/J\).
+
+L'identification se fait à partir de la pseudo-période des oscillations et de la décroissance de l'enveloppe :
+\[
+\frac{C_v}{J} = 2d, \qquad \frac{K_r}{J} = d^2 + \omega_0^2.
+\]
+
+La tension induite en circuit ouvert est \(u(t) = K_u\,\dot{\alpha}(t)\). Son enveloppe au moment du lâcher (t=0) vaut approximativement \(U_{\text{env},0} \approx K_u\,\Delta\alpha_{\max}\,\omega_0\), d'où :
+\[
+K_u \approx \frac{U_{\text{env},0} \cdot \omega_0}{\Delta\alpha_{\max} \cdot (d^2 + \omega_0^2)}.
+\]
+
+\subsubsection{EX3 — Bobine court-circuitée : \texorpdfstring{\(J,\,C_v,\,K_r\)}{J, Cv, Kr}}
+
+Lorsque les bornes sont court-circuitées (\(u=0\)), en négligeant la dynamique inductance (\(L\,di/dt \approx 0\)) :
+\[
+i \approx -\frac{K_u}{R}\,\dot{\alpha}.
+\]
+L'équation mécanique devient :
+\[
+J\,\ddot{\alpha} + \underbrace{\left(C_v + \frac{K_u^2}{R}\right)}_{=\,2J\,d'}\dot{\alpha} + K_r\,\alpha = 0,
+\]
+ce qui donne un coefficient d'amortissement effectif modifié \(d'\). La différence avec le cas ouvert :
+\[
+d' - d = \frac{K_u^2}{2JR}
+\quad \Rightarrow \quad
+\boxed{J = \frac{K_u^2}{2R(d'-d)}}.
+\]
+Les paramètres mécaniques complets sont ensuite déduits :
+\[
+C_v = 2J\,d, \qquad K_r = J\,(d^2 + \omega_0^2).
+\]

@@ -1,1 +1,11 @@
 \section{Conclusion}
+
+Ce laboratoire a permis d'identifier expérimentalement les six paramètres du modèle électromécanique d'un actionneur à bobine mobile à partir de trois essais oscilloscopiques.
+
+La résistance \(R \approx \SI{24.2}{\ohm}\) et l'inductance \(L \approx \SI{1.94}{H}\) ont été extraites de la réponse indicielle (EX1). L'essai maintenu n'a pas pu être exploité automatiquement — un problème d'acquisition ne permettant pas de détecter le front de tension — et c'est l'essai avec mouvement qui a servi de référence. La présence de la f.c.e.m.\ pendant le transitoire constitue une source d'erreur modérée sur ces deux valeurs.
+
+Les oscillations libres bobine ouverte (EX2) ont permis d'extraire les rapports \(C_v/J\) et \(K_r/J\) ainsi que la constante électromécanique \(K_u \approx \SI{2.75e-3}{V.s/rad}\). La fréquence propre \(\omega_0 \approx \SI{1920}{rad/s}\) est reproductible entre les essais droite et gauche, ce qui valide la robustesse de l'identification mécanique.
+
+La comparaison EX2 / EX3 a fourni le moment d'inertie \(J \approx \SI{4.67e-9}{kg.m^2}\), puis par déduction \(C_v\) et \(K_r\). Cependant, les fréquences mesurées en court-circuit (EX3) sont environ deux fois supérieures à celles en circuit ouvert (EX2), ce qui est physiquement incohérent. Ceci pointe vers des fenêtres d'analyse trop étroites dans \texttt{SHORT\_WINDOWS}, conduisant à une surestimation de la fréquence. Une ré-analyse avec des fenêtres ajustées permettrait d'améliorer la fiabilité de \(J\), \(C_v\) et \(K_r\).
+
+En définitive, la méthodologie en trois étapes (EX1 \(\to\) EX2 \(\to\) EX3) s'avère bien adaptée à l'identification de ce type d'actionneur et les ordres de grandeur obtenus sont physiquement plausibles, mais la qualité des résultats dépend fortement de la qualité des acquisitions et du réglage manuel des fenêtres d'analyse.

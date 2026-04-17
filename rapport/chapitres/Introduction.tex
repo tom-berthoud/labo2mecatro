@@ -1,1 +1,43 @@
 \section{Introduction}
+
+Ce laboratoire porte sur l'identification expérimentale des paramètres d'un actionneur à bobine mobile. Ce type d'actionneur est un transducteur électromécanique à déflexion angulaire limitée, largement utilisé en instrumentation de précision : galvanomètres, têtes d'impression, scanners laser ou actionneurs de disques durs.
+
+Le système est entièrement caractérisé par six paramètres physiques :
+\begin{itemize}
+    \item \(R\) : résistance de la bobine [\si{\ohm}] ;
+    \item \(L\) : inductance de la bobine [\si{H}] ;
+    \item \(K_u = K_t\) : constante électromécanique de couplage [\si{V.s/rad} = \si{N.m/A}] ;
+    \item \(J\) : moment d'inertie de la partie mobile [\si{kg.m^2}] ;
+    \item \(C_v\) : coefficient d'amortissement visqueux [\si{N.m.s/rad}] ;
+    \item \(K_r\) : raideur du rappel élastique [\si{N.m/rad}].
+\end{itemize}
+
+Trois expériences complémentaires sont menées pour identifier ces paramètres :
+\begin{itemize}
+    \item \textbf{EX1} — réponse indicielle avec et sans mouvement : identification de \(R\) et \(L\) ;
+    \item \textbf{EX2} — oscillations libres bobine ouverte : identification de \(C_v/J\), \(K_r/J\) et \(K_u\) ;
+    \item \textbf{EX3} — oscillations libres bobine court-circuitée : identification de \(J\), \(C_v\) et \(K_r\).
+\end{itemize}
+
+Les signaux sont acquis à l'oscilloscope Tektronix DPO2014B et traités sous Python dans le notebook \texttt{traitement.ipynb}.
+
+\paragraph{Données de l'actionneur.}
+L'angle de déflexion maximal est \(\Delta\alpha_{\max} = \SI{17.1}{\degree} = \SI{0.298}{rad}\).
+La sonde de courant utilisée a un gain de \(\SI{1}{A/V}\).
+
+\paragraph{Appareillage utilisé.}
+\begin{table}[H]
+\centering
+\caption{Instruments utilisés}
+\begin{tabular}{ll}
+\toprule
+Appareil & Modèle \\
+\midrule
+Oscilloscope        & Tektronix DPO2014B \\
+Sonde de courant    & gain \(\SI{1}{A/V}\) \\
+Alimentation DC     & GW INSTEK PPE-3323 \\
+Actionneur          & bobine mobile à déflexion limitée \\
+\bottomrule
+\end{tabular}
+\label{tab:appareils}
+\end{table}

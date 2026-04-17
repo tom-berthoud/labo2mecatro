@@ -15,20 +15,29 @@
 \documentclass[a4paper,12pt,oneside]{article}
 
 % Ne pas toucher, nécessaire à la mise en forme
-\usepackage[utf8x]{inputenc} 
-\usepackage[T1]{fontenc} % Nouvelle norme pour codage des caractères
-\usepackage{lmodern} % Nouvelle forme de la fonte ComputerModern
-\usepackage[french]{babel} % Règles typographiques françaises, césures
-\usepackage{graphicx} % Insertion images
-\usepackage{epstopdf} % Convertir les images eps vers pdf
-\epstopdfsetup{outdir=./Images/converted_to_pdf/} % Dossier de sortie des images converties
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\epstopdfsetup{outdir=./Images/converted_to_pdf/}
 \pagenumbering{arabic}
 \usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm, showframe=false]{geometry}
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{siunitx}
 \usepackage{hyperref}
 \usepackage{pdfpages}
 \usepackage{color}
 \usepackage{float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\captionsetup[table]{skip=10pt}
 
 
 % fichier avec les constantes (à adapter pour les étudiants)
@@ -71,6 +80,10 @@
     %\newpage
 
 	\input{chapitres/Introduction.tex}
+
+	\input{chapitres/Theorie.tex}
+
+	\input{chapitres/Mesures.tex}
 
 	\input{chapitres/Conclusion.tex}
 	
