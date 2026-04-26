@@ -1,6 +1,6 @@
 \section{Introduction}
 
-Ce laboratoire porte sur l'identification expérimentale des paramètres d'un actionneur à bobine mobile. Ce type d'actionneur est un transducteur électromécanique à déflexion angulaire limitée, largement utilisé en instrumentation de précision : galvanomètres, têtes d'impression, scanners laser ou actionneurs de disques durs.
+Ce laboratoire porte sur l'identification expérimentale des paramètres d'un actionneur électrodynamique à bobine mobile, du type utilisé pour le positionnement des têtes de lecture des disques durs (\emph{Voice Coil Motor}, VCM). Ce transducteur à déflexion angulaire limitée se rencontre aussi dans les galvanomètres, les têtes d'impression et les scanners laser.
 
 Le système est entièrement caractérisé par six paramètres physiques :
 \begin{itemize}
@@ -12,18 +12,36 @@ Le système est entièrement caractérisé par six paramètres physiques :
     \item \(K_r\) : raideur du rappel élastique [\si{N.m/rad}].
 \end{itemize}
 
-Trois expériences complémentaires sont menées pour identifier ces paramètres :
+Trois expériences complémentaires sont menées pour identifier ces six paramètres :
 \begin{itemize}
-    \item \textbf{EX1} — réponse indicielle avec et sans mouvement : identification de \(R\) et \(L\) ;
-    \item \textbf{EX2} — oscillations libres bobine ouverte : identification de \(C_v/J\), \(K_r/J\) et \(K_u\) ;
-    \item \textbf{EX3} — oscillations libres bobine court-circuitée : identification de \(J\), \(C_v\) et \(K_r\).
+    \item \textbf{EX1} -- réponse indicielle, bobine bloquée et libre : identification de \(R\) et \(L\) ;
+    \item \textbf{EX2} -- oscillations libres, bobine ouverte : identification de \(\delta = C_v/(2J)\), \(\omega_n^2 = K_r/J\) et \(K_u\) ;
+    \item \textbf{EX3} -- oscillations libres, bobine court-circuitée : extraction de \(J\), \(C_v\) et \(K_r\) par comparaison avec EX2.
 \end{itemize}
 
-Les signaux sont acquis à l'oscilloscope Tektronix DPO2014B et traités sous Python dans le notebook \texttt{traitement.ipynb}.
+Les acquisitions sont réalisées à l'oscilloscope Tektronix DPO2014B (\(125\,000\) points par essai, \(F_e = \SI{333{,}3}{kHz}\)). Les données brutes au format CSV sont post-traitées en Python dans le notebook \texttt{traitement.ipynb}, qui contient toute la chaîne d'analyse (chargement, détection des fronts, fit exponentiel, détection des extrema oscillants, calcul des paramètres et superpositions mesure/modèle).
 
 \paragraph{Données de l'actionneur.}
-L'angle de déflexion maximal est \(\Delta\alpha_{\max} = \SI{17.1}{\degree} = \SI{0.298}{rad}\).
-La sonde de courant utilisée a un gain de \(\SI{1}{A/V}\).
+L'angle de déflexion maximal est \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree} = \SI{0{,}2985}{rad}\). Pour le calcul du nombre de spires, l'induction dans l'entrefer est \(B = \SI{0{,}45}{T}\), avec un rayon extérieur de la bobine de \(\SI{30}{mm}\) et un rayon intérieur de \(\SI{15}{mm}\). Le courant doit rester inférieur à \(\SI{0{,}2}{A}\) pour des raisons thermiques.
+
+\paragraph{Conditions de mesure.}
+\begin{table}[H]
+\centering
+\caption{Conditions de mesure}
+\begin{tabular}{ll}
+\toprule
+Échantillonnage oscilloscope & \(F_e = \SI{333{,}3}{kHz}\) (pas de \(\SI{3}{\micro s}\)) \\
+Longueur d'enregistrement & \(125\,000\) points par voie \\
+Sonde de courant & Tektronix TCPA300/TCPA312, gain \(\SI{1}{A/V}\) \\
+Gain CH1 (tension) & EX1 : \(\SI{1}{V/div}\) ; EX2/3 : \(\SI{1}{V/div}\) \\
+Gain CH2 (courant) & EX1 : \(\SI{50}{mV/div}\) (sonde \(\SI{1}{A/V}\)) \\
+Échelon de tension EX1 & \(\approx \SI{4}{V}\), signal carré périodique \\
+Courant maximal mesuré & \(\approx \SI{157}{mA}\) (\(<\SI{200}{mA}\) : OK) \\
+Lâcher EX2/EX3 & manuel depuis \(\Delta\alpha_{\max}\), bobine ouverte / court-circuitée \\
+\bottomrule
+\end{tabular}
+\label{tab:conditions}
+\end{table}
 
 \paragraph{Appareillage utilisé.}
 \begin{table}[H]
@@ -34,9 +52,12 @@ La sonde de courant utilisée a un gain de \(\SI{1}{A/V}\).
 Appareil & Modèle \\
 \midrule
 Oscilloscope        & Tektronix DPO2014B \\
-Sonde de courant    & gain \(\SI{1}{A/V}\) \\
+Sonde de courant    & Tektronix TCPA300 / TCPA312 (gain \(\SI{1}{A/V}\)) \\
 Alimentation DC     & GW INSTEK PPE-3323 \\
-Actionneur          & bobine mobile à déflexion limitée \\
+Générateur de fonction & GW AFG 2005 \\
+Amplificateur de puissance & HEIG-VD / iAi \\
+Actionneur          & VCM à déflexion limitée, \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree}\) \\
+Logiciel d'analyse  & Python 3 (numpy, pandas, matplotlib) \\
 \bottomrule
 \end{tabular}
 \label{tab:appareils}

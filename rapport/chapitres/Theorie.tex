@@ -1,12 +1,12 @@
-\section{Modèle théorique}
+\section{Modèle de connaissance}
 
 \subsection{Principe de l'actionneur à bobine mobile}
 
-Un actionneur à bobine mobile est constitué d'un aimant permanent générant un champ magnétique radial constant et d'une bobine solidaire d'un axe rotatif. Lorsqu'un courant \(i\) traverse la bobine, la force de Laplace crée un couple moteur proportionnel à \(i\). Un ressort de torsion assure le rappel vers la position nulle et limite la déflexion.
+L'actionneur étudié est un transducteur électrodynamique à déflexion angulaire limitée, utilisé en particulier pour le positionnement des têtes de lecture des disques durs. Une bobine plate, solidaire d'un axe rotatif, plonge dans l'entrefer d'un aimant permanent semi-circulaire qui crée un champ radial \(B\) constant. Lorsqu'un courant \(i\) traverse la bobine, la force de Laplace produit un couple moteur \(T_{em} = K_t\,i\). Un ressort de torsion impose une position d'équilibre stable \(\alpha = 0\) en l'absence de courant et limite la course angulaire à \(\pm\Delta\alpha_{\max}\).
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[>=Stealth]
+\begin{tikzpicture}[>=Stealth, node distance=1.5cm]
 % Bloc électrique
 \draw[thick, rounded corners=4pt] (0,0) rectangle (3.2,2.2);
 \node[align=center] at (1.6,1.5) {\small Circuit};
@@ -19,11 +19,11 @@ Un actionneur à bobine mobile est constitué d'un aimant permanent générant u
 \node[font=\scriptsize] at (7.4,0.35) {\(J,\, C_v,\, K_r\)};
 % Flèches et couplage
 \draw[->] (-1.2,1.1) -- (0,1.1) node[midway,above]{\small \(u\)};
-\draw[->] (3.2,1.4) -- (5.8,1.4) node[midway,above]{\small \(K_t \cdot i\)};
-\draw[->] (5.8,0.8) -- (3.2,0.8) node[midway,below]{\small \(K_u \cdot \dot{\alpha}\)};
+\draw[->] (3.2,1.4) -- (5.8,1.4) node[midway,above]{\small \(K_t\,i\)};
+\draw[->] (5.8,0.8) -- (3.2,0.8) node[midway,below]{\small \(K_u\,\dot{\alpha}\)};
 \draw[->] (9,1.1) -- (10.2,1.1) node[midway,above]{\small \(\alpha\)};
 \end{tikzpicture}
-\caption{Schéma bloc de l'actionneur à bobine mobile}
+\caption{Schéma de principe : couplage électro-mécanique de l'actionneur}
 \label{fig:schema_bloc}
 \end{figure}
 
@@ -32,78 +32,182 @@ Un actionneur à bobine mobile est constitué d'un aimant permanent générant u
 \subsubsection{Équation électrique}
 
 La loi des mailles sur le circuit de la bobine donne :
-\[
-u(t) = R\,i(t) + L\,\frac{di}{dt} + K_u\,\dot{\alpha}(t)
-\]
-où le terme \(K_u\,\dot{\alpha}\) est la force contre-électromotrice (f.c.e.m.) induite par le déplacement angulaire.
+\begin{equation}
+u(t) \;=\; R\,i(t) \;+\; L\,\frac{di}{dt} \;+\; K_u\,\dot{\alpha}(t),
+\label{eq:elec}
+\end{equation}
+où \(K_u\,\dot{\alpha}\) est la force contre-électromotrice (f.c.e.m.) induite par la rotation de la bobine dans le champ.
 
 \subsubsection{Équation mécanique}
 
 Le principe fondamental de la dynamique en rotation s'écrit :
-\[
-J\,\ddot{\alpha}(t) = K_t\,i(t) - C_v\,\dot{\alpha}(t) - K_r\,\alpha(t)
-\]
-Le couple moteur \(K_t \cdot i\) est contrebalancé par le frottement visqueux \(C_v\,\dot{\alpha}\) et le rappel élastique \(K_r\,\alpha\).
+\begin{equation}
+J\,\ddot{\alpha}(t) \;=\; K_t\,i(t) \;-\; C_v\,\dot{\alpha}(t) \;-\; K_r\,\alpha(t).
+\label{eq:meca}
+\end{equation}
 
 \paragraph{Hypothèse \(K_u = K_t\) en unités SI.}
-Par le théorème de réciprocité des transducteurs linéaires, la constante de f.c.e.m. et la constante de couple sont égales en unités SI : \(K_u = K_t = K\).
+Le bilan énergétique d'un transducteur idéal ($P_{m\acute{e}c} = T_{em}\,\dot{\alpha} = K_t\,i\,\dot{\alpha}$ et $P_{\acute{e}lec} = u_{im}\,i = K_u\,\dot{\alpha}\,i$) impose, en unités SI cohérentes, l'égalité \(K_u = K_t \equiv K\). Cette identité est utilisée par la suite.
+
+\subsection{Constantes de temps caractéristiques}
+
+Le système comporte deux dynamiques de natures différentes :
+\begin{itemize}
+    \item une dynamique \emph{électrique} de constante de temps \(\tau_{el} = L/R\) ;
+    \item une dynamique \emph{mécanique} caractérisée par \(\tau_{m\acute{e}c} \sim 1/\delta\) avec \(\delta = C_v/(2J)\), beaucoup plus lente.
+\end{itemize}
+Sous l'hypothèse usuelle \(\tau_{el} \ll \tau_{m\acute{e}c}\), le terme \(L\,di/dt\) peut être négligé dans \eqref{eq:elec} pour l'analyse mécanique, ce qui simplifie EX2 et EX3 ci-dessous. Ce point sera vérifié numériquement à la section~\ref{sec:synthese}.
 
 \subsection{Stratégie d'identification}
 \label{sec:strat_ident}
 
 Les six paramètres sont identifiés séquentiellement à partir de trois essais.
 
-\subsubsection{EX1 — Réponse indicielle : \texorpdfstring{\(R\)}{R} et \texorpdfstring{\(L\)}{L}}
+\subsubsection{EX1 -- Réponse indicielle bloquée : \texorpdfstring{\(R\)}{R} et \texorpdfstring{\(L\)}{L}}
 
-Lorsque l'actionneur est maintenu immobile (\(\dot{\alpha}=0\)), la f.c.e.m. est nulle. L'équation électrique devient :
+L'actionneur est maintenu mécaniquement (\(\dot{\alpha} = 0\)). La f.c.e.m.\ est alors nulle et \eqref{eq:elec} se réduit à un simple circuit RL :
 \[
-u(t) = R\,i(t) + L\,\frac{di}{dt}.
+u(t) \;=\; R\,i(t) \;+\; L\,\frac{di}{dt}.
 \]
-En réponse à un échelon \(u_0\), le courant suit une exponentielle :
-\[
-i(t) = \frac{u_0}{R}\left(1 - e^{-t/\tau}\right), \quad \tau = \frac{L}{R}.
-\]
-L'état stationnaire donne \(R = \Delta u / \Delta i_{\infty}\) et la constante de temps donne \(L = R\tau\).
+La réponse à un échelon \(u_0\) est :
+\begin{equation}
+i(t) \;=\; \frac{u_0}{R}\,\bigl(1 - e^{-t/\tau_{el}}\bigr), \qquad \tau_{el} = \frac{L}{R}.
+\label{eq:i_RL}
+\end{equation}
+L'état stationnaire fournit \(R = \Delta u/\Delta i_{\infty}\) et la constante de temps fournit \(L = R\,\tau_{el}\).
 
-\subsubsection{EX2 — Bobine ouverte : \texorpdfstring{\(d,\,\omega_0,\,K_u\)}{d, w0, Ku}}
+\subsubsection{EX2 -- Bobine ouverte : \texorpdfstring{\(\delta\)}{d}, \texorpdfstring{\(\omega_0\)}{w0} et \texorpdfstring{\(K_u\)}{Ku}}
 
-Lorsque la bobine est en circuit ouvert (\(i=0\)), l'équation mécanique se réduit à :
-\[
-J\,\ddot{\alpha} + C_v\,\dot{\alpha} + K_r\,\alpha = 0.
-\]
-La solution pour des conditions initiales \(\alpha(0) = \Delta\alpha_{\max}\), \(\dot{\alpha}(0)=0\) est :
-\[
-\alpha(t) = \Delta\alpha_{\max}\,e^{-d\,t}\cos(\omega_d\,t),
-\]
-avec \(d = C_v/(2J)\), \(\omega_d = \sqrt{\omega_0^2 - d^2}\) et \(\omega_0^2 = K_r/J\).
+En circuit ouvert, \(i = 0\) et la f.c.e.m.\ apparaît directement aux bornes de la bobine : \(u_{im}(t) = K_u\,\dot{\alpha}(t)\). L'équation \eqref{eq:meca} devient :
+\begin{equation}
+\ddot{\alpha} + \frac{C_v}{J}\,\dot{\alpha} + \frac{K_r}{J}\,\alpha = 0
+\;\Leftrightarrow\;
+\ddot{\alpha} + 2\delta\,\dot{\alpha} + \omega_n^2\,\alpha = 0,
+\label{eq:meca_libre}
+\end{equation}
+avec \(\delta = C_v/(2J)\) et \(\omega_n^2 = K_r/J\). Avec les conditions initiales \(\alpha(0) = \Delta\alpha_{\max}\) et \(\dot\alpha(0) = 0\), la solution amortie pour \(\omega_n > \delta\) est :
+\begin{equation}
+\alpha(t) \;=\; \Delta\alpha_{\max}\,e^{-\delta t}\!\left[\cos(\omega_d\,t) + \frac{\delta}{\omega_d}\sin(\omega_d\,t)\right],
+\quad \omega_d = \sqrt{\omega_n^2 - \delta^2}.
+\label{eq:alpha_t}
+\end{equation}
 
-L'identification se fait à partir de la pseudo-période des oscillations et de la décroissance de l'enveloppe :
+En dérivant et après simplification :
+\begin{equation}
+\dot{\alpha}(t) \;=\; -\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_d}\,e^{-\delta t}\sin(\omega_d\,t),
+\label{eq:omega_t}
+\end{equation}
+d'où la tension induite :
+\begin{equation}
+u_{im}(t) \;=\; -K_u\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_d}\,e^{-\delta t}\sin(\omega_d\,t).
+\label{eq:uim_t}
+\end{equation}
+
+\paragraph{Approximation \(\omega_n \gg \delta\).}
+Lorsque l'amortissement est faible, \(\omega_d \simeq \omega_n\) et \(\omega_n^2/\omega_d \simeq \omega_n\). L'expression \eqref{eq:uim_t} devient :
 \[
-\frac{C_v}{J} = 2d, \qquad \frac{K_r}{J} = d^2 + \omega_0^2.
+u_{im}(t) \;\approx\; -K_u\,\Delta\alpha_{\max}\,\omega_n\,e^{-\delta t}\sin(\omega_n\,t).
+\]
+La validité de cette simplification sera contrôlée par le ratio \(\omega_n/\delta\).
+
+\paragraph{Identification.}
+L'enveloppe extrapolée à l'instant du lâcher (\(t = 0^+\)) vaut :
+\[
+U_{\text{env},0} \;=\; K_u\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_d},
+\qquad\text{d'où}\qquad
+\boxed{\;K_u \;=\; \frac{U_{\text{env},0}\;\omega_d}{\Delta\alpha_{\max}\,\omega_n^2}\;\approx\;\frac{U_{\text{env},0}}{\Delta\alpha_{\max}\,\omega_n}.\;}
+\]
+La pseudo-pulsation \(\omega_d\) se lit directement sur la mesure (\(\omega_d = 2\pi/T_d\)), et le coefficient \(\delta\) s'obtient par régression log-linéaire sur les amplitudes des extrema. On en déduit :
+\[
+\frac{C_v}{J} = 2\,\delta, \qquad \frac{K_r}{J} = \omega_n^2 = \omega_d^2 + \delta^2.
 \]
 
-La tension induite en circuit ouvert est \(u(t) = K_u\,\dot{\alpha}(t)\). Son enveloppe au moment du lâcher (t=0) vaut approximativement \(U_{\text{env},0} \approx K_u\,\Delta\alpha_{\max}\,\omega_0\), d'où :
+\subsubsection{EX3 -- Bobine court-circuitée : \texorpdfstring{\(J\)}{J}, \texorpdfstring{\(C_v\)}{Cv}, \texorpdfstring{\(K_r\)}{Kr}}
+
+Lorsque les bornes de la bobine sont reliées (\(u = 0\)) et en négligeant \(L\,di/dt\) sous l'hypothèse \(\tau_{el} \ll \tau_{m\acute{e}c}\), \eqref{eq:elec} donne :
+\begin{equation}
+i(t) \;\approx\; -\,\frac{K_u}{R}\,\dot{\alpha}(t).
+\label{eq:i_short}
+\end{equation}
+En substituant dans \eqref{eq:meca} :
+\begin{equation}
+J\,\ddot{\alpha} + \underbrace{\!\left(C_v + \frac{K_u^2}{R}\right)\!}_{=\,2J\,\delta'}\dot{\alpha} + K_r\,\alpha = 0,
+\label{eq:meca_short}
+\end{equation}
+soit la même équation différentielle qu'en \eqref{eq:meca_libre} avec un amortissement effectif augmenté :
 \[
-K_u \approx \frac{U_{\text{env},0} \cdot \omega_0}{\Delta\alpha_{\max} \cdot (d^2 + \omega_0^2)}.
+\delta' \;=\; \delta + \frac{K_u^2}{2JR}.
+\]
+La pulsation propre non amortie \(\omega_n\) reste inchangée puisque \(K_r/J\) ne dépend pas du circuit. L'écart \(\delta' - \delta\) est entièrement attribuable au freinage électromagnétique :
+\begin{equation}
+\boxed{\;J \;=\; \frac{K_u^2}{2\,R\,(\delta' - \delta)}\;}
+\label{eq:J}
+\end{equation}
+puis :
+\[
+C_v = 2\,J\,\delta, \qquad K_r = J\,\omega_n^2.
+\]
+Le courant induit, par \eqref{eq:i_short} et \eqref{eq:omega_t} avec \(\delta\) remplacé par \(\delta'\), s'écrit :
+\begin{equation}
+i(t) \;=\; \frac{K_u\,\Delta\alpha_{\max}}{R}\,\frac{\omega_n^2}{\omega_d'}\,e^{-\delta' t}\sin(\omega_d'\,t),
+\quad \omega_d' = \sqrt{\omega_n^2 - \delta'^2}.
+\label{eq:i_t}
+\end{equation}
+
+\paragraph{Validité de \(\omega_n \gg \delta'\).}
+Le freinage électromagnétique étant nettement supérieur au frottement visqueux mécanique, l'approximation \(\omega_n \gg \delta'\) n'est pas garantie en court-circuit. Le ratio \(\omega_n/\delta'\) sera donc évalué expérimentalement.
+
+\subsection{Transformées de Laplace sans simplification}
+\label{sec:laplace}
+
+Pour répondre au point §2.2.4-4 de la donnée, on écrit les équations \eqref{eq:elec} et \eqref{eq:meca} dans le domaine de Laplace, sans imposer \(\tau_{el} \ll \tau_{m\acute{e}c}\), et en tenant compte des conditions initiales \(\alpha(0) = \alpha_0\), \(\dot\alpha(0) = \Omega_0\), \(i(0) = i_0\) :
+\[
+\begin{aligned}
+U(s) &= (R + L\,s)\,I(s) - L\,i_0 + K_u\,\bigl[s\,\alpha(s) - \alpha_0\bigr], \\
+\bigl(J s^2 + C_v s + K_r\bigr)\alpha(s) &= K_t\,I(s) + J\,\bigl(s\,\alpha_0 + \Omega_0\bigr) + C_v\,\alpha_0.
+\end{aligned}
 \]
 
-\subsubsection{EX3 — Bobine court-circuitée : \texorpdfstring{\(J,\,C_v,\,K_r\)}{J, Cv, Kr}}
+En conditions initiales nulles (\(i_0 = \alpha_0 = \Omega_0 = 0\)), la fonction de transfert globale \(\alpha(s)/U(s)\) s'obtient par élimination de \(I(s)\) :
+\begin{equation}
+\frac{\alpha(s)}{U(s)} \;=\; \frac{K_t}{(R + L s)\,(J s^2 + C_v s + K_r) + K_u K_t\,s}.
+\label{eq:FT}
+\end{equation}
+Le dénominateur est un polynôme du \emph{troisième} ordre en \(s\) ; il se factorise en un mode électrique rapide à \(s \simeq -R/L\) et une dynamique mécanique d'ordre 2 à \(s \simeq -\delta' \pm j\omega_d'\) lorsque \(\tau_{el} \ll \tau_{m\acute{e}c}\), retrouvant ainsi le modèle d'ordre 2 utilisé pour l'identification.
 
-Lorsque les bornes sont court-circuitées (\(u=0\)), en négligeant la dynamique inductance (\(L\,di/dt \approx 0\)) :
-\[
-i \approx -\frac{K_u}{R}\,\dot{\alpha}.
-\]
-L'équation mécanique devient :
-\[
-J\,\ddot{\alpha} + \underbrace{\left(C_v + \frac{K_u^2}{R}\right)}_{=\,2J\,d'}\dot{\alpha} + K_r\,\alpha = 0,
-\]
-ce qui donne un coefficient d'amortissement effectif modifié \(d'\). La différence avec le cas ouvert :
-\[
-d' - d = \frac{K_u^2}{2JR}
-\quad \Rightarrow \quad
-\boxed{J = \frac{K_u^2}{2R(d'-d)}}.
-\]
-Les paramètres mécaniques complets sont ensuite déduits :
-\[
-C_v = 2J\,d, \qquad K_r = J\,(d^2 + \omega_0^2).
-\]
+\subsection{Schéma fonctionnel}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=Stealth, node distance=1.5cm and 1.6cm,
+   block/.style={draw, thick, rounded corners=2pt, minimum height=1cm, minimum width=2.4cm, align=center},
+   sum/.style={draw, circle, thick, inner sep=1pt, minimum size=5mm}]
+
+\node[coordinate] (in) {};
+\node[sum, right=1cm of in] (sum1) {};
+\node[block, right=of sum1] (elec) {$\dfrac{1}{R + L\,s}$};
+\node[block, right=of elec] (Kt) {$K_t$};
+\node[sum, right=of Kt] (sum2) {};
+\node[block, right=of sum2] (mec) {$\dfrac{1}{J s^2 + C_v s + K_r}$};
+\node[coordinate, right=1cm of mec] (out) {};
+\node[block, below=1.4cm of Kt] (Ku) {$K_u\,s$};
+
+\draw[->] (in) -- (sum1) node[pos=0,above]{$U(s)$};
+\draw[->] (sum1) -- (elec) node[pos=0.5,above]{};
+\draw[->] (elec) -- (Kt) node[pos=0.5,above]{$I(s)$};
+\draw[->] (Kt) -- (sum2);
+\draw[->] (sum2) -- (mec);
+\draw[->] (mec) -- (out) node[pos=1,above]{$\alpha(s)$};
+
+% feedback fcem
+\draw (mec) |- (Ku);
+\draw[->] (Ku) -| (sum1);
+\node[below right=0.05 and 0.1 of sum1] {\scriptsize $-$};
+
+% perturbation de couple (option = 0 ici)
+\node[above=0.4 of sum2] {\scriptsize $T_{ext}=0$};
+
+\end{tikzpicture}
+\caption{Schéma fonctionnel complet U $\to \alpha$ (bonus §2.2.5)}
+\label{fig:schema_fonctionnel}
+\end{figure}

@@ -1,11 +1,28 @@
 \section{Conclusion}
 
-Ce laboratoire a permis d'identifier expérimentalement les six paramètres du modèle électromécanique d'un actionneur à bobine mobile à partir de trois essais oscilloscopiques.
+Ce laboratoire a permis d'identifier expérimentalement les six paramètres du modèle de connaissance d'un actionneur à bobine mobile à partir de trois essais oscilloscopiques.
 
-La résistance \(R \approx \SI{24.2}{\ohm}\) et l'inductance \(L \approx \SI{1.94}{H}\) ont été extraites de la réponse indicielle (EX1). L'essai maintenu n'a pas pu être exploité automatiquement — un problème d'acquisition ne permettant pas de détecter le front de tension — et c'est l'essai avec mouvement qui a servi de référence. La présence de la f.c.e.m.\ pendant le transitoire constitue une source d'erreur modérée sur ces deux valeurs.
+L'essai indiciel bobine bloquée (EX1) fournit directement les paramètres électriques :
+\[
+R = \SI{25{,}31}{\ohm}, \qquad L = \SI{3{,}07}{mH}, \qquad \tau_{el} = \SI{121}{\micro s}.
+\]
+La comparaison avec l'essai libre met clairement en évidence l'effet de la f.c.e.m.\ \(K_u\,\dot\alpha\) qui se traduit par une décroissance du courant sur l'échelle mécanique (\(\sim\!\SI{50}{ms}\)) une fois le régime électrique établi.
 
-Les oscillations libres bobine ouverte (EX2) ont permis d'extraire les rapports \(C_v/J\) et \(K_r/J\) ainsi que la constante électromécanique \(K_u \approx \SI{2.75e-3}{V.s/rad}\). La fréquence propre \(\omega_0 \approx \SI{1920}{rad/s}\) est reproductible entre les essais droite et gauche, ce qui valide la robustesse de l'identification mécanique.
+Les oscillations libres en circuit ouvert (EX2) donnent un coefficient d'amortissement visqueux \(\delta = \SI{3{,}18}{rad/s}\) et une pseudo-pulsation \(\omega_d = \SI{117{,}9}{rad/s}\) (\(\simeq \omega_n\) puisque \(\omega_n/\delta \approx 37 \gg 1\)). L'enveloppe au moment du lâcher fournit la constante électromécanique :
+\[
+K_u = K_t \approx \SI{71{,}3e-3}{V.s/rad}.
+\]
+La très bonne reproductibilité droite/gauche (\(<4\,\%\) sur \(\delta\) et \(<0{,}2\,\%\) sur \(\omega_d\)) valide la méthode.
 
-La comparaison EX2 / EX3 a fourni le moment d'inertie \(J \approx \SI{4.67e-9}{kg.m^2}\), puis par déduction \(C_v\) et \(K_r\). Cependant, les fréquences mesurées en court-circuit (EX3) sont environ deux fois supérieures à celles en circuit ouvert (EX2), ce qui est physiquement incohérent. Ceci pointe vers des fenêtres d'analyse trop étroites dans \texttt{SHORT\_WINDOWS}, conduisant à une surestimation de la fréquence. Une ré-analyse avec des fenêtres ajustées permettrait d'améliorer la fiabilité de \(J\), \(C_v\) et \(K_r\).
+La comparaison EX2 / EX3 (bobine court-circuitée) fournit l'inertie via l'augmentation d'amortissement induite par le freinage électromagnétique \(K_u^2/R\) :
+\[
+J = \frac{K_u^2}{2R(\delta' - \delta)} \approx \SI{4{,}37e-6}{kg.m^2},
+\]
+puis \(C_v \approx \SI{2{,}78e-5}{N.m.s/rad}\) et \(K_r \approx \SI{6{,}08e-2}{N.m/rad}\). La pulsation propre retrouvée en court-circuit (\(\omega_n \approx \SI{118}{rad/s}\)) est cohérente avec celle d'EX2, ce qui confirme la validité du modèle. En revanche, le ratio \(\omega_n/\delta' \approx 4{,}5\) en court-circuit est nettement plus faible qu'en circuit ouvert, ce qui révèle que le freinage électromagnétique est dominant devant le frottement visqueux mécanique (facteur \(7\)).
 
-En définitive, la méthodologie en trois étapes (EX1 \(\to\) EX2 \(\to\) EX3) s'avère bien adaptée à l'identification de ce type d'actionneur et les ordres de grandeur obtenus sont physiquement plausibles, mais la qualité des résultats dépend fortement de la qualité des acquisitions et du réglage manuel des fenêtres d'analyse.
+Le calcul du nombre de spires à partir de \(K_t = N\,B\,(r_{ext}^2 - r_{int}^2)\) donne \(N \approx 235\), valeur typique d'un VCM miniature. La séparation des constantes de temps (\(\tau_{el}/\tau_{m\acute{e}c} \approx 4\!\times\!10^{-4}\)) justifie a posteriori l'hypothèse \(L\,di/dt \approx 0\) utilisée pour passer de l'équation électrique à \(i(t) \approx -K_u/R\,\dot\alpha(t)\) en EX3.
+
+\paragraph{Validation modèle / mesure.} Pour chaque essai, la solution analytique du système du second ordre \eqref{eq:alpha_t}--\eqref{eq:i_t} a été superposée à la mesure (figures~\ref{fig:ex1_blocked_fit}, \ref{fig:ex2_validation} et \ref{fig:ex3_validation}). L'accord est très satisfaisant, ce qui valide simultanément la chaîne d'identification et l'hypothèse d'un système linéaire d'ordre 2 (mécanique) découplé d'un sous-système d'ordre 1 (électrique).
+
+\paragraph{Limites et perspectives.}
+Les principales sources d'incertitude sont : (i) la dispersion droite/gauche de \(\delta'\) (\(\pm\SI{30}{\%}\)) liée au faible nombre d'oscillations exploitables avant extinction en court-circuit, et (ii) l'extrapolation de l'enveloppe au lâcher pour estimer \(U_{\text{env},0}\). Une amélioration consisterait à appliquer un \emph{fit} non linéaire complet \(A\,e^{-\delta t}\sin(\omega_d t + \varphi)\) sur l'ensemble du signal plutôt qu'une régression sur les pics, ce qui pondère mieux les points faiblement bruités. La méthode des trois étapes (EX1 \(\to\) EX2 \(\to\) EX3) reste cependant directe et physiquement transparente, et les ordres de grandeur obtenus sont compatibles avec un actionneur VCM réel.

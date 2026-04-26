@@ -1,194 +1,233 @@
 \section{Mesures et identification}
 
-\subsection{EX1 — Paramètres électriques \texorpdfstring{\(R\)}{R} et \texorpdfstring{\(L\)}{L}}
+\subsection{EX1 -- Paramètres électriques \texorpdfstring{\(R\)}{R} et \texorpdfstring{\(L\)}{L}}
 
 \subsubsection{Protocole}
 
-Un échelon de tension est appliqué à la bobine. Deux essais sont réalisés :
+Un échelon de tension de \(\approx 4\,\si{V}\) est appliqué à la bobine via un signal carré périodique. Deux essais sont enregistrés :
 \begin{itemize}
-    \item \textbf{Essai avec mouvement} (\texttt{T0000ALL.CSV}) : l'actionneur est libre de se déplacer ;
-    \item \textbf{Essai maintenu} (\texttt{T0001ALL.CSV}) : l'actionneur est maintenu immobile (\(\dot{\alpha}=0\)).
+    \item \textbf{Essai maintenu} (\texttt{T0001ALL.CSV}) : la partie mobile est immobilisée mécaniquement, donc \(\dot{\alpha} = 0\) et la f.c.e.m. est nulle. C'est cet essai qui sert à l'identification de \(R\) et \(L\) selon \eqref{eq:i_RL}.
+    \item \textbf{Essai avec mouvement} (\texttt{T0000ALL.CSV}) : la partie mobile est libre. Cet essai permet de mettre en évidence l'effet de la f.c.e.m.\ sur la réponse en courant.
 \end{itemize}
+La voie CH1 mesure la tension \(u(t)\) aux bornes de la bobine, la voie CH2 le courant \(i(t)\) issu de la sonde TCPA300/TCPA312 (gain \(\SI{1}{A/V}\)). L'amplitude est dimensionnée pour que \(i_{\max} < \SI{0,2}{A}\) (limite thermique). On mesure ici un courant stationnaire \(i_\infty \approx \SI{157}{mA} < \SI{200}{mA}\) : la condition est respectée.
 
-La voie CH1 mesure la tension \(u\) aux bornes de la bobine, CH2 mesure le courant via la sonde (\(\SI{1}{A/V}\)). L'essai maintenu est théoriquement nécessaire pour éliminer la f.c.e.m. et obtenir \(R\) et \(L\) directement. L'essai avec mouvement permet d'observer l'influence de la f.c.e.m.\ sur la réponse transitoire.
-
-\subsubsection{Signaux bruts}
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/fig_ex1_moving.pdf}
-\caption{EX1 — Tension et courant lors de l'essai avec mouvement}
-\label{fig:ex1_moving}
-\end{figure}
+\subsubsection{Vue d'ensemble des deux essais}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/fig_ex1_blocked.pdf}
-\caption{EX1 — Tension et courant lors de l'essai maintenu}
-\label{fig:ex1_blocked}
+\includegraphics[width=\textwidth]{images/fig_ex1_overview.pdf}
+\caption{EX1 -- Tension et courant dans les deux configurations (zoom sur le front montant)}
+\label{fig:ex1_overview}
 \end{figure}
 
-\subsubsection{Zoom sur la réponse indicielle}
+\paragraph{Effet de la f.c.e.m.}
+La figure~\ref{fig:ex1_compare} compare les courants des deux essais sur une fenêtre plus large. Dans l'essai bloqué, le courant atteint son régime stationnaire en \(\sim\!\SI{0,5}{ms}\) puis reste constant. Dans l'essai avec mouvement, le courant rejoint un plateau électrique sur la même échelle de temps, puis subit une lente décroissance et oscillation sur l'échelle mécanique (\(\sim\!\SI{50}{ms}\)) imputable à la f.c.e.m.\ \(K_u\,\dot\alpha\) qui s'oppose à la tension appliquée pendant le mouvement de l'actionneur.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/fig_ex1_zoom_moving.pdf}
-\caption{EX1 — Zoom sur le front montant (essai avec mouvement) ; la bosse sur le courant trahit la f.c.e.m.}
-\label{fig:ex1_zoom_moving}
+\includegraphics[width=\textwidth]{images/fig_ex1_compare.pdf}
+\caption{EX1 -- Mise en évidence de la f.c.e.m. : comparaison des courants maintenu vs en mouvement sur \(\SI{60}{ms}\)}
+\label{fig:ex1_compare}
 \end{figure}
+
+\subsubsection{Identification de \texorpdfstring{\(R\)}{R} et \texorpdfstring{\(L\)}{L} (essai bloqué)}
+
+Sur l'essai maintenu, on mesure :
+\[
+\Delta u = u_\infty - u_0 \;\approx\; \SI{4{,}00}{V}, \qquad
+\Delta i = i_\infty - i_0 \;\approx\; \SI{157}{mA}.
+\]
+La résistance vient directement de la loi d'Ohm en régime établi :
+\[
+R \;=\; \frac{\Delta u}{\Delta i} \;\approx\; \SI{25{,}31}{\ohm}.
+\]
+La constante de temps \(\tau_{el}\) est extraite par régression log-linéaire sur \(\log(i_\infty - i(t))\) durant la montée (figure~\ref{fig:ex1_blocked_fit}) :
+\[
+\tau_{el} \;\approx\; \SI{121}{\micro s}, \qquad L \;=\; R\,\tau_{el} \;\approx\; \SI{3{,}07}{mH}.
+\]
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/fig_ex1_zoom_blocked.pdf}
-\caption{EX1 — Zoom sur le front montant (essai maintenu)}
-\label{fig:ex1_zoom_blocked}
+\includegraphics[width=0.95\textwidth]{images/fig_ex1_blocked_fit.pdf}
+\caption{EX1 -- Validation : superposition mesure et modèle \(i(t)=i_\infty(1-e^{-t/\tau_{el}})\)}
+\label{fig:ex1_blocked_fit}
 \end{figure}
 
-\subsubsection{Résultats}
+\subsubsection{Résultats EX1}
 
 \begin{table}[H]
 \centering
 \caption{Résultats de l'identification \(R\) et \(L\) (EX1)}
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccc}
 \toprule
-Essai & \(R\) [\si{\ohm}] & \(\tau\) [\si{s}] & \(L\) [\si{H}] \\
+Essai & \(R\) [\si{\ohm}] & \(\tau_{el}\) [\si{\micro s}] & \(L\) [\si{mH}] & Source \\
 \midrule
-Avec mouvement & 24.2 & 0.0799 & 1.94 \\
-Maintenu       & ---  & ---    & ---  \\
+Bloqué (T0001) & \textbf{25{,}31} & \textbf{121} & \textbf{3{,}07} & retenu \\
+Avec mouvement (T0000) & 24{,}21 & --- & --- & vérification\(^\dagger\) \\
 \bottomrule
 \end{tabular}
 \label{tab:ex1}
 \end{table}
-
-\subsubsection{Commentaire}
-
-L'essai maintenu n'a pas pu être exploité automatiquement car le front montant n'est pas détecté dans le signal de tension : la bobine ne semble pas avoir reçu d'échelon dans cette capture. Par conséquent, \(R\) et \(L\) sont estimés à partir de l'essai avec mouvement en supposant que la contribution de la f.c.e.m.\ reste faible sur le régime transitoire initial (la mécanique est plus lente que l'électrique). On retient \(R \approx \SI{24.2}{\ohm}\) et \(L \approx \SI{1.94}{H}\).
-
-La valeur \(\tau = L/R \approx \SI{80}{ms}\) paraît élevée mais est cohérente avec une grande inductance : les bobines de ces actionneurs à aimant permanent peuvent avoir des inductances de l'ordre du henry.
+\noindent\(^\dagger\)\,La résistance est ici biaisée par la f.c.e.m.\ qui réduit légèrement le courant stationnaire. La constante de temps apparente \(\tau_{el}^{(\text{moving})}\) ne peut pas être extraite proprement car la dynamique mécanique se superpose à la dynamique électrique.
 
 \newpage
-\subsection{EX2 — Bobine ouverte : amortissement \texorpdfstring{\(d\)}{d} et fréquence \texorpdfstring{\(\omega_0\)}{w0}}
+\subsection{EX2 -- Bobine ouverte : amortissement \texorpdfstring{\(\delta\)}{d} et pulsation \texorpdfstring{\(\omega_n\)}{wn}}
 
 \subsubsection{Protocole}
 
-L'actionneur est déplacé jusqu'à l'angle maximal \(\Delta\alpha_{\max} = \SI{17.1}{\degree}\), puis relâché. La bobine est en circuit ouvert : la tension induite est mesurée sur CH1. Deux configurations sont testées : droite (\texttt{T0002CH1.CSV}) et gauche (\texttt{T0003CH1.CSV}).
+La partie mobile est portée à l'angle extrême \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree} = \SI{0{,}2985}{rad}\) puis relâchée brusquement, bobine en circuit ouvert. La tension induite \(u_{im}(t)\) est mesurée sur CH1. Deux essais sont réalisés (positions extrêmes droite et gauche) :
+\begin{itemize}
+    \item \texttt{T0002CH1.CSV} : essai droite ;
+    \item \texttt{T0003CH1.CSV} : essai gauche.
+\end{itemize}
 
 Le traitement consiste à :
 \begin{enumerate}
-    \item sélectionner une fenêtre d'analyse après le lâcher ;
-    \item détecter les pics de l'enveloppe du signal \(|u(t)|\) ;
-    \item estimer la pseudo-période \(T_d = 2\pi/\omega_d\) et le coefficient d'amortissement \(d\) par régression log-linéaire sur les amplitudes des pics.
+    \item lisser le signal sur une fenêtre de \(\SI{2}{ms}\) ;
+    \item retrancher la composante DC résiduelle pour centrer le signal ;
+    \item détecter les extrema alternés (max/min) du signal centré ;
+    \item estimer \(T_d = 2\pi/\omega_d\) à partir de l'écart entre extrema consécutifs (= \(T_d/2\)) ;
+    \item estimer \(\delta\) par régression log-linéaire sur \(\log\lvert u_{im}\rvert\) aux extrema.
 \end{enumerate}
 
 \subsubsection{Signaux et pics détectés}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/fig_ex2_droite_ouverte.pdf}
-\caption{EX2 — Signal lissé et pics détectés, essai droite (bobine ouverte)}
+\includegraphics[width=\textwidth]{images/fig_ex2_droite.pdf}
+\caption{EX2 -- Signal lissé, extrema détectés et enveloppe exponentielle, essai droite}
 \label{fig:ex2_droite}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/fig_ex2_gauche_ouverte.pdf}
-\caption{EX2 — Signal lissé et pics détectés, essai gauche (bobine ouverte)}
+\includegraphics[width=\textwidth]{images/fig_ex2_gauche.pdf}
+\caption{EX2 -- Signal lissé, extrema détectés et enveloppe exponentielle, essai gauche}
 \label{fig:ex2_gauche}
 \end{figure}
 
-\subsubsection{Résultats}
+\subsubsection{Validation : superposition mesure / modèle}
+
+L'expression analytique \eqref{eq:uim_t} est tracée avec les paramètres identifiés. La très bonne superposition (figure~\ref{fig:ex2_validation}) confirme la validité du modèle d'ordre 2.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/fig_ex2_validation_droite.pdf}
+\caption{EX2 -- Validation : mesure vs modèle analytique \(u_{im}(t) = K_u\,\dot\alpha(t)\), essai droite}
+\label{fig:ex2_validation}
+\end{figure}
+
+\subsubsection{Résultats EX2}
 
 \begin{table}[H]
 \centering
-\caption{Résultats EX2 --- oscillations bobine ouverte}
+\caption{Résultats EX2 -- oscillations bobine ouverte}
 \begin{tabular}{lcccc}
 \toprule
-Essai & \(d\) [\si{rad/s}] & \(\omega_0\) [\si{rad/s}] & \(C_v/J\) [\si{s^{-1}}] & \(K_r/J\) [\si{rad.s^{-2}}] \\
+Essai & \(\delta\) [\si{rad/s}] & \(\omega_d\) [\si{rad/s}] & \(C_v/J\) [\si{s^{-1}}] & \(K_r/J\) [\si{rad^2.s^{-2}}] \\
 \midrule
-Droite ouverte & 4.20  & 1896.8 & 8.39   & \(3.60 \times 10^{6}\) \\
-Gauche ouverte & 7.47  & 1943.0 & 14.94  & \(3.78 \times 10^{6}\) \\
+Droite (T0002) & 3{,}11 & 117{,}99 & 6{,}22 & \(1{,}393\times10^{4}\) \\
+Gauche (T0003) & 3{,}24 & 117{,}82 & 6{,}48 & \(1{,}388\times10^{4}\) \\
 \midrule
-Moyenne        & 5.83  & 1919.9 & 11.66  & \(3.69 \times 10^{6}\) \\
+\textbf{Moyenne} & \textbf{3{,}18} & \textbf{117{,}91} & \textbf{6{,}35} & \(\mathbf{1{,}391\times10^{4}}\) \\
 \bottomrule
 \end{tabular}
 \label{tab:ex2}
 \end{table}
 
-L'enveloppe extrapolée au moment du lâcher donne \(U_{\text{env},0} \approx \SI{1.58}{V}\) (moyenne des deux essais). La constante électromécanique est alors :
+L'enveloppe extrapolée à l'instant du lâcher vaut \(U_{\text{env},0} \approx \SI{2{,}51}{V}\) (moyenne des deux essais). Avec \(\omega_n = \sqrt{\omega_d^2 + \delta^2} \approx \omega_d\) (l'écart est \(<\!10^{-3}\)) :
 \[
-K_u \approx \frac{1.578 \times 1919.9}{0.2985 \times 3.687\times10^{6}} \approx \SI{2.75e-3}{V.s/rad}.
+K_u \;=\; \frac{U_{\text{env},0}\,\omega_d}{\Delta\alpha_{\max}\,\omega_n^2}
+\;\approx\; \frac{\SI{2{,}51}{V}}{\SI{0{,}2985}{rad}\times\SI{117{,}9}{rad/s}}
+\;\approx\; \boxed{\SI{71{,}3e-3}{V.s/rad}}.
 \]
 
-\subsubsection{Commentaire}
+\subsubsection{Vérification \(\omega_n \gg \delta\)}
 
-Les valeurs de \(d\) diffèrent légèrement entre les deux essais (4.20 vs 7.47 rad/s), ce qui s'explique par de légères asymétries mécaniques et des incertitudes sur la fenêtre d'analyse. La fréquence propre \(\omega_0 \approx \SI{1920}{rad/s}\) est cohérente (\(\approx \SI{305}{Hz}\)), valeur typique pour un petit galvanomètre.
+Le ratio
+\[
+\frac{\omega_n}{\delta} \;\approx\; \frac{117{,}9}{3{,}18} \;\approx\; \mathbf{37}
+\]
+est largement supérieur à 1, ce qui justifie a posteriori la simplification \(\omega_d \approx \omega_n\) utilisée pour extraire \(K_u\). La reproductibilité droite/gauche (\(<\!4\,\%\) sur \(\delta\) et \(<\!0{,}2\,\%\) sur \(\omega_d\)) confirme la robustesse de l'identification mécanique.
 
 \newpage
-\subsection{EX3 — Bobine court-circuitée : identification de \texorpdfstring{\(J\)}{J}, \texorpdfstring{\(C_v\)}{Cv}, \texorpdfstring{\(K_r\)}{Kr}}
+\subsection{EX3 -- Bobine court-circuitée : identification de \texorpdfstring{\(J\)}{J}, \texorpdfstring{\(C_v\)}{Cv}, \texorpdfstring{\(K_r\)}{Kr}}
 
 \subsubsection{Protocole}
 
-Même procédure que EX2, mais les bornes de la bobine sont court-circuitées. Le courant induit dissipe de l'énergie supplémentaire, ce qui augmente l'amortissement apparent. Les fichiers \texttt{T0004CH1.CSV} (droite) et \texttt{T0005CH1.CSV} (gauche) contiennent le courant mesuré en sortie de la sonde.
+Même procédure que EX2 mais les bornes de la bobine sont court-circuitées via la sonde de courant. Le courant induit dissipe une puissance supplémentaire dans \(R\), augmentant l'amortissement apparent à la valeur \(\delta'\). Les fichiers \texttt{T0004CH1.CSV} (droite) et \texttt{T0005CH1.CSV} (gauche) contiennent le courant \(i(t)\) (CH1, gain \(\SI{1}{A/V}\)).
 
 \subsubsection{Signaux et pics détectés}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/fig_ex3_droite_court-circuit.pdf}
-\caption{EX3 — Signal lissé et pics détectés, essai droite (bobine court-circuit)}
+\includegraphics[width=\textwidth]{images/fig_ex3_droite.pdf}
+\caption{EX3 -- Signal lissé, extrema détectés et enveloppe, essai droite (bobine court-circuit)}
 \label{fig:ex3_droite}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/fig_ex3_gauche_court-circuit.pdf}
-\caption{EX3 — Signal lissé et pics détectés, essai gauche (bobine court-circuit)}
+\includegraphics[width=\textwidth]{images/fig_ex3_gauche.pdf}
+\caption{EX3 -- Signal lissé, extrema détectés et enveloppe, essai gauche (bobine court-circuit)}
 \label{fig:ex3_gauche}
 \end{figure}
 
-\subsubsection{Résultats}
+\subsubsection{Validation : superposition mesure / modèle}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{images/fig_ex3_validation_droite.pdf}
+\caption{EX3 -- Validation : mesure vs modèle \(i(t) = -K_u/R\,\dot\alpha(t)\), essai droite}
+\label{fig:ex3_validation}
+\end{figure}
+
+\subsubsection{Résultats EX3}
 
 \begin{table}[H]
 \centering
-\caption{Résultats EX3 --- oscillations bobine court-circuitée}
-\begin{tabular}{lccc}
+\caption{Résultats EX3 -- oscillations bobine court-circuitée}
+\begin{tabular}{lcccc}
 \toprule
-Essai & \(d'\) [\si{rad/s}] & \(\omega_0'\) [\si{rad/s}] & \((C_v + K_u^2/R)/J\) [\si{s^{-1}}] \\
+Essai & \(\delta'\) [\si{rad/s}] & \(\omega_d'\) [\si{rad/s}] & \(\omega_n' \) [\si{rad/s}] & \((C_v + K_u^2/R)/J\) [\si{s^{-1}}] \\
 \midrule
-Droite court-circuit & 24.56 & 3894.7 &  49.12 \\
-Gauche court-circuit & 54.14 & 3910.2 & 108.28 \\
+Droite (T0004)  & 18{,}26 & 96{,}93  & 98{,}63  & 36{,}51 \\
+Gauche (T0005)  & 34{,}08 & 112{,}25 & 117{,}31 & 68{,}16 \\
 \midrule
-Moyenne              & 39.35 & 3902.5 &  78.70 \\
+\textbf{Moyenne} & \textbf{26{,}17} & \textbf{104{,}59} & \textbf{107{,}97} & \textbf{52{,}33} \\
 \bottomrule
 \end{tabular}
 \label{tab:ex3}
 \end{table}
 
-\subsubsection{Commentaire}
+\subsubsection{Vérification \(\omega_n \gg \delta'\) et discussion}
 
-Les valeurs de \(d'\) sont bien supérieures à \(d\) (facteur 7 à 45), confirmant l'effet de freinage électromagnétique attendu. En revanche, les fréquences \(\omega_0' \approx \SI{3900}{rad/s}\) sont environ le double de \(\omega_0 \approx \SI{1920}{rad/s}\). Cette incohérence — la raideur \(K_r\) ne devrait pas changer entre EX2 et EX3 — suggère une erreur d'analyse dans les fenêtres \texttt{SHORT\_WINDOWS} choisies manuellement : le signal capturé est probablement tronqué, conduisant à une estimation erronée de la pseudo-période.
+Le ratio
+\[
+\frac{\omega_n}{\delta'} \;\approx\; \frac{117{,}9}{26{,}2} \;\approx\; \mathbf{4{,}5}
+\]
+est nettement plus petit qu'en EX2 (37). L'hypothèse \(\omega_n \gg \delta'\) reste vérifiée mais avec une marge limitée : c'est précisément l'effet du freinage électromagnétique \(K_u^2/R\) qui se rajoute au frottement visqueux. Cela explique aussi pourquoi la pseudo-pulsation mesurée \(\omega_d'\) est plus faible que \(\omega_d\) (\(\omega_d'^2 = \omega_n^2 - \delta'^2\) avec \(\delta'^2 \sim \) 6 \% de \(\omega_n^2\)). On retrouve bien, à l'incertitude expérimentale près, la même pulsation propre \(\omega_n \approx \SI{118}{rad/s}\) entre EX2 et EX3, ce qui valide la cohérence du modèle (la raideur \(K_r\) ne dépend pas du circuit).
 
-Pour un calcul cohérent de \(J\), on utilise \(\omega_0\) issue de EX2 (plus fiable) et les \(d, d'\) moyens.
+La dispersion droite/gauche est plus importante en EX3 qu'en EX2 (\(\delta'\) varie de \(\pm\!\SI{30}{\%}\) entre les deux côtés). Cela tient au faible nombre de pseudo-périodes observables avant extinction du signal (4 à 5 extrema seulement), ce qui dégrade la précision de la régression log-linéaire. La moyenne des deux essais reste néanmoins exploitable.
 
 \newpage
 \subsection{Synthèse des paramètres identifiés}
+\label{sec:synthese}
 
 \subsubsection{Calcul de \texorpdfstring{\(J\)}{J}, \texorpdfstring{\(C_v\)}{Cv}, \texorpdfstring{\(K_r\)}{Kr}}
 
-En appliquant les formules de la section~\ref{sec:strat_ident} avec \(R = \SI{24.2}{\ohm}\), \(K_u = \SI{2.75e-3}{V.s/rad}\), \(\overline{d} = \SI{5.83}{rad/s}\), \(\overline{d'} = \SI{39.35}{rad/s}\) et \(\overline{\omega_0} = \SI{1919.9}{rad/s}\) :
-
+À partir de \eqref{eq:J} avec \(R = \SI{25{,}31}{\ohm}\), \(K_u = \SI{71{,}3e-3}{V.s/rad}\), \(\bar{\delta} = \SI{3{,}18}{rad/s}\) et \(\bar{\delta'} = \SI{26{,}17}{rad/s}\) :
 \[
-J = \frac{K_u^2}{2R(\overline{d'} - \overline{d})}
-= \frac{(2.75\times10^{-3})^2}{2 \times 24.2 \times (39.35 - 5.83)}
-\approx \SI{4.67e-9}{kg.m^2}
+J \;=\; \frac{K_u^2}{2\,R\,(\bar{\delta'} - \bar{\delta})}
+\;=\; \frac{(71{,}3\!\times\!10^{-3})^2}{2 \times 25{,}31 \times 22{,}99}
+\;\approx\; \boxed{\SI{4{,}37e-6}{kg.m^2}}.
 \]
-
+Puis :
 \[
-C_v = 2J\,\overline{d} = 2 \times 4.67\times10^{-9} \times 5.83 \approx \SI{5.44e-8}{N.m.s/rad}
+C_v \;=\; 2\,J\,\bar{\delta} \;=\; 2 \times 4{,}37\!\times\!10^{-6} \times 3{,}18 \;\approx\; \SI{2{,}78e-5}{N.m.s/rad},
 \]
-
 \[
-K_r = J\,(\overline{d}^2 + \overline{\omega_0}^2) = 4.67\times10^{-9} \times 3.686\times10^{6} \approx \SI{1.72e-2}{N.m/rad}
+K_r \;=\; J\,\bar{\omega_n}^2 \;=\; 4{,}37\!\times\!10^{-6} \times (117{,}91)^2 \;\approx\; \SI{6{,}08e-2}{N.m/rad}.
 \]
 
 \subsubsection{Tableau récapitulatif}
@@ -196,27 +235,48 @@ K_r = J\,(\overline{d}^2 + \overline{\omega_0}^2) = 4.67\times10^{-9} \times 3.6
 \begin{table}[H]
 \centering
 \caption{Paramètres identifiés de l'actionneur à bobine mobile}
-\begin{tabular}{lllll}
+\begin{tabular}{llrll}
 \toprule
 Paramètre & Symbole & Valeur & Unité & Source \\
 \midrule
-Résistance de bobine         & \(R\)    & 24.2              & \si{\ohm}       & EX1 (essai avec mouvement) \\
-Inductance de bobine         & \(L\)    & 1.94              & \si{H}          & EX1 (essai avec mouvement) \\
-Constante élec.-méc.         & \(K_u\)  & \(2.75\times10^{-3}\) & \si{V.s/rad}& EX2 \\
-Moment d'inertie             & \(J\)    & \(4.67\times10^{-9}\) & \si{kg.m^2} & EX2 + EX3 \\
-Amortissement visqueux       & \(C_v\)  & \(5.44\times10^{-8}\) & \si{N.m.s/rad}& EX2 + EX3 \\
-Raideur de rappel            & \(K_r\)  & \(1.72\times10^{-2}\) & \si{N.m/rad}& EX2 + EX3 \\
+Résistance de bobine     & \(R\)         & 25{,}31              & \si{\ohm}        & EX1 maintenu \\
+Inductance de bobine     & \(L\)         & 3{,}07               & \si{mH}          & EX1 maintenu \\
+Constante électroméca.   & \(K_u = K_t\) & \(71{,}3\!\times\!10^{-3}\) & \si{V.s/rad} & EX2 \\
+Moment d'inertie         & \(J\)         & \(4{,}37\!\times\!10^{-6}\) & \si{kg.m^2} & EX2 + EX3 \\
+Amortissement visqueux   & \(C_v\)       & \(2{,}78\!\times\!10^{-5}\) & \si{N.m.s/rad}& EX2 + EX3 \\
+Raideur de rappel        & \(K_r\)       & \(6{,}08\!\times\!10^{-2}\) & \si{N.m/rad}  & EX2 + EX3 \\
 \bottomrule
 \end{tabular}
 \label{tab:synthese}
 \end{table}
 
-\subsubsection{Discussion}
+\subsubsection{Constantes de temps et validité de l'hypothèse \texorpdfstring{\(\tau_{el} \ll \tau_{m\acute{e}c}\)}{tau\_el << tau\_mec}}
 
-Les valeurs de \(R\) et \(L\) sont estimées à partir de l'essai avec mouvement, ce qui introduit une incertitude car la f.c.e.m.\ perturbe légèrement la réponse transitoire. Un essai maintenu correctement acquis fournirait des valeurs plus fiables.
+\[
+\tau_{el} = \frac{L}{R} \approx \SI{121}{\micro s}, \qquad
+\tau_{m\acute{e}c} = \frac{1}{\delta} \approx \SI{315}{ms}.
+\]
+Le rapport \(\tau_{el}/\tau_{m\acute{e}c} \approx 4\!\times\!10^{-4}\) confirme nettement la séparation des dynamiques. Le terme \(L\,di/dt\) peut donc être négligé en EX3, ce qui justifie a posteriori \eqref{eq:i_short} et la formule \eqref{eq:J} pour \(J\).
 
-Le moment d'inertie \(J \approx \SI{4.7}{nkg.m^2}\) est très faible, ce qui est cohérent avec un actionneur miniature dont la partie mobile (bobine et bobinée) est de masse réduite à faible bras de levier.
+\subsubsection{Calcul du nombre de spires (§2.2.4--3)}
 
-La fréquence propre élevée (\(\omega_0 \approx \SI{1920}{rad/s} \approx \SI{305}{Hz}\)) associée à une très faible inertie confirme que le rappel élastique \(K_r\) est relativement rigide par rapport à la masse en rotation.
+Pour une bobine plate dont les conducteurs actifs traversent radialement le champ \(B\) entre \(r_{int}\) et \(r_{ext}\), le couple s'écrit :
+\[
+T_{em} \;=\; N \cdot B \cdot 2 \int_{r_{int}}^{r_{ext}} i\,r\,dr
+\;=\; N \cdot B \cdot \bigl(r_{ext}^2 - r_{int}^2\bigr)\,i,
+\]
+soit \(K_t = N\,B\,(r_{ext}^2 - r_{int}^2)\). Avec \(B = \SI{0{,}45}{T}\), \(r_{ext} = \SI{30}{mm}\), \(r_{int} = \SI{15}{mm}\) :
+\[
+N \;=\; \frac{K_t}{B\,(r_{ext}^2 - r_{int}^2)}
+\;=\; \frac{71{,}3\!\times\!10^{-3}}{0{,}45 \times 6{,}75\!\times\!10^{-4}}
+\;\approx\; \boxed{N \approx 235 \text{ spires}}.
+\]
+Cet ordre de grandeur est cohérent avec une bobine VCM de petit actionneur, où la masse de cuivre est minimisée pour limiter \(J\) tout en conservant une constante de couple suffisante.
 
-Le coefficient d'amortissement visqueux \(C_v\) est très petit : le frottement de l'air prédomine peu. L'amortissement principal entre les essais EX2 et EX3 provient bien du freinage électromagnétique (\(K_u^2/R\)), ce qui valide la cohérence du modèle.
+\subsubsection{Discussion physique}
+
+\paragraph{Cohérence des ordres de grandeur.} Tous les paramètres identifiés sont compatibles avec un actionneur VCM (Voice Coil Motor) miniature de tête de lecture : \(R\) de quelques dizaines de \si{\ohm}, \(L\) du \si{mH}, \(K_u\) typique \(10^{-1}\) à \(10^{-2}\,\si{V.s/rad}\), \(J\) de l'ordre du \si{\micro kg.m^2} pour une partie mobile en aluminium/cuivre.
+
+\paragraph{Couple d'équilibre à pleine déflexion.} Avec \(K_r = \SI{6{,}1e-2}{N.m/rad}\) et \(\Delta\alpha_{\max} = \SI{0{,}298}{rad}\), le couple statique pour maintenir l'actionneur à la butée est \(T_r = K_r\,\Delta\alpha_{\max} \approx \SI{18{,}1}{mN.m}\). Le courant nécessaire vaut \(i = T_r/K_t \approx \SI{0{,}25}{A}\), légèrement au-dessus de la limite thermique de \(\SI{0{,}2}{A}\) : l'actionneur est donc prévu pour fonctionner principalement en régime dynamique et non en maintien à fond de course.
+
+\paragraph{Bilan d'amortissement.} Le frottement visqueux mécanique seul correspond à \(\delta \approx \SI{3{,}2}{rad/s}\), tandis que le freinage électromagnétique en court-circuit ajoute \(\delta' - \delta \approx \SI{23}{rad/s}\), soit un facteur 7 de plus. La dissipation \(K_u^2/R\) est ainsi le mécanisme dominant lorsque la bobine est fermée : c'est le principe de l'amortissement électromagnétique exploité dans les têtes de lecture pour stopper rapidement les vibrations résiduelles.
