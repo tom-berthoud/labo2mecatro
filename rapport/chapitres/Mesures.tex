@@ -1,4 +1,4 @@
-\section{Mesures et identification}
+\section{Partie Pratique}
 
 \tikzset{
   appareil/.style={draw, thick, rounded corners=3pt, align=center, minimum width=2.6cm, minimum height=1.35cm},
@@ -23,7 +23,7 @@ Un échelon de tension de \(\approx \SI{3{,}8}{V}\) est appliqué à la bobine v
     \item \textbf{Essai maintenu} : la partie mobile est immobilisée mécaniquement, donc \(\dot{\alpha} = 0\) et la f.c.e.m. est nulle. C'est cet essai qui sert à l'identification de \(R\) et \(L\) selon \eqref{eq:i_RL}.
     \item \textbf{Essai avec mouvement} : la partie mobile est libre. Cet essai permet de mettre en évidence l'effet de la f.c.e.m.\ sur la réponse en courant.
 \end{itemize}
-La voie CH1 mesure la tension \(u(t)\) à la sortie de l'amplificateur, c'est-à-dire la tension appliquée au montage bobine--sonde de courant. La voie CH2 mesure le courant \(i(t)\) issu de la sonde TCPA300/TCPA312 (gain \(\SI{1}{A/V}\)). L'amplitude est dimensionnée pour que \(i_{\max} < \SI{0,2}{A}\) (limite thermique). On mesure ici un courant stationnaire \(i_\infty \approx \SI{149}{mA} < \SI{200}{mA}\) : la condition est respectée.
+La voie CH1 mesure la tension \(u(t)\) à la sortie de l'amplificateur, c'est-à-dire la tension appliquée au montage bobine--sonde de courant. La voie CH2 mesure le courant \(i(t)\) issu de la sonde TCPA300/TCPA312 (gain \(\SI{1}{A/V}\)). L'amplitude est dimensionnée pour que \(i_{\max} < \SI{0,2}{A}\) (limite thermique). On mesure ici un courant stationnaire \(i_\infty \approx \SI{149}{mA} < \SI{200}{mA}\) en essai bloqué : la condition est respectée. En essai avec mouvement, le pic transitoire de courant au front montant approche temporairement \(\SI{180}{mA}\) avant que la f.c.e.m.\ ne s'établisse ; cela reste sans risque thermique étant donné le caractère bref (durée \(<\!\!\SI{1}{ms}\)) de ce dépassement vis-à-vis de la constante de temps thermique de la bobine.
 
 \begin{figure}[H]
 \centering
@@ -56,7 +56,7 @@ La voie CH1 mesure la tension \(u(t)\) à la sortie de l'amplificateur, c'est-à
 \node[borne] (sin) at (7.4,5.95) {};
 \node[borne] (sout) at (10.2,5.95) {};
 \node[bornechdeux] (ssig) at (8.8,4.92) {};
-\node[font=\scriptsize, anchor=west] at (10.32,6.15) {OUT};
+\node[font=\scriptsize, anchor=south] at (10.32,6.15) {OUT};
 \node[font=\scriptsize, anchor=west] at (8.95,4.72) {sig};
 % Oscillo
 \node[bornechun] (ch1) at (5.55,2.45) {};
@@ -64,7 +64,7 @@ La voie CH1 mesure la tension \(u(t)\) à la sortie de l'amplificateur, c'est-à
 \node[font=\scriptsize, anchor=east] at (5.42,2.65) {CH1};
 \node[font=\scriptsize, anchor=west] at (7.78,2.65) {CH2};
 % Actuateur stylise
-\node[borneplus,label=left:{\scriptsize \(+\)}] (bp) at (11.5,5.95) {};
+\node[borneplus,label= above left:{\scriptsize \(+\)}] (bp) at (11.5,5.95) {};
 \node[borne,label=left:{\scriptsize \(-\)}] (bm) at (11.5,5.15) {};
 \node[font=\small, align=center] at (13.2,5.55) {Actionneur\\VCM};
 % Cablage puissance et signaux
@@ -127,7 +127,6 @@ La constante de temps \(\tau_{el}\) est extraite par régression log-linéaire s
 \end{figure}
 
 \subsubsection{Résultats EX1}
-<
 \begin{table}[H]
 \centering
 \caption{Résultats de l'identification \(R\) et \(L\) (EX1)}
@@ -238,14 +237,20 @@ Gauche & 3{,}24 & 117{,}82 & 6{,}48 & \(1{,}388\times10^{4}\) \\
 \label{tab:ex2}
 \end{table}
 
-La première crête de \(u_{im}\), atteinte à \(t \approx T_0/4 \approx \SI{13{,}3}{ms}\), vaut en moyenne \(\hat U_1 \approx \SI{2{,}41}{V}\). Les enveloppes extrapolées au lâcher valent environ \(\SI{2{,}67}{V}\) à droite et \(\SI{2{,}36}{V}\) à gauche, soit une dispersion d'environ \(\pm\SI{6}{\%}\) qui se reporte directement sur \(K_u\). Avec \(\omega_n = \sqrt{\omega_0^2 + \delta^2} \approx \omega_0\) (l'écart est \(<\!10^{-3}\)) et le facteur correctif \(e^{-\delta\,T_0/4} = e^{-3{,}18\times 1{,}33\!\times\!10^{-2}} \approx 0{,}958\), la formule \eqref{eq:Ku_ident} donne :
+La première crête de \(u_{im}\), atteinte à \(t \approx T_0/4 \approx \SI{13{,}3}{ms}\), vaut \(\hat U_{1,\text{D}} \approx \SI{2{,}56}{V}\) à droite et \(\hat U_{1,\text{G}} \approx \SI{2{,}26}{V}\) à gauche (enveloppes extrapolées au lâcher : \(\SI{2{,}67}{V}\) et \(\SI{2{,}36}{V}\) respectivement). Conformément à la consigne, on applique la formule exacte \eqref{eq:Ku_ident} à chaque essai séparément en utilisant ses propres \(\delta\), \(\omega_0\) et \(\omega_n = \sqrt{\omega_0^2 + \delta^2}\), puis on moyenne les deux \(K_u\) :
 \begin{align*}
-K_u
-&= \frac{\hat U_1\,\omega_0}{\omega_n^2\,\Delta\alpha_{\max}\,e^{-\delta\,T_0/4}} \\
-&\approx \frac{\SI{2{,}41}{V}}{\SI{0{,}2985}{rad}\times\SI{117{,}9}{rad/s}\times 0{,}958}
-\approx \boxed{\SI{71{,}3e-3}{V.s/rad}}.
+K_{u,\text{D}}
+&= \frac{\hat U_{1,\text{D}}\,\omega_{0,\text{D}}}{\omega_{n,\text{D}}^2\,\Delta\alpha_{\max}\,e^{-\delta_{\text{D}}\,T_{0,\text{D}}/4}}
+\approx \frac{2{,}56\times 117{,}99}{13931\times 0{,}2985\times 0{,}960}
+\approx \SI{75{,}7e-3}{V.s/rad}, \\
+K_{u,\text{G}}
+&= \frac{\hat U_{1,\text{G}}\,\omega_{0,\text{G}}}{\omega_{n,\text{G}}^2\,\Delta\alpha_{\max}\,e^{-\delta_{\text{G}}\,T_{0,\text{G}}/4}}
+\approx \frac{2{,}26\times 117{,}82}{13892\times 0{,}2985\times 0{,}958}
+\approx \SI{67{,}1e-3}{V.s/rad}, \\
+\bar{K_u}
+&= \tfrac{1}{2}\bigl(K_{u,\text{D}} + K_{u,\text{G}}\bigr) \approx \boxed{\SI{71{,}4e-3}{V.s/rad}}.
 \end{align*}
-Le facteur \(e^{-\delta\,T_0/4}\) compense la décroissance subie par l'enveloppe entre l'instant du lâcher et la première crête.
+Le facteur \(e^{-\delta\,T_0/4}\) compense la décroissance subie par l'enveloppe entre l'instant du lâcher et la première crête. La dispersion droite/gauche d'environ \(\pm\SI{6}{\%}\) sur \(K_u\) reflète une asymétrie résiduelle du ressort de torsion (enveloppe initiale plus haute du côté droit) ; la formule exacte est utilisée plutôt que la simplification \(\omega_n^2/\omega_0 \approx \omega_n\) pour ne pas introduire de biais supplémentaire.
 
 \subsubsection{Vérification \texorpdfstring{\(\omega_n \gg \delta\)}{wn >> delta}}
 
@@ -340,11 +345,12 @@ Essai & \(\delta'\) [\si{rad/s}] & \(\omega_0'\) [\si{rad/s}] & \(\omega_n' \) [
 Droite  & 18{,}26 & 96{,}93  & 98{,}63  & 36{,}51 \\
 Gauche  & 34{,}08 & 112{,}25 & 117{,}31 & 68{,}16 \\
 \midrule
-\textbf{Moyenne} & \textbf{26{,}17} & \textbf{104{,}59} & \textbf{107{,}97} & \textbf{52{,}33} \\
+\textbf{Moyenne} & \textbf{26{,}17} & \textbf{104{,}59} & \textbf{107{,}97}\(^\dagger\) & \textbf{52{,}33} \\
 \bottomrule
 \end{tabular}
 \label{tab:ex3}
 \end{table}
+\noindent\(^\dagger\)\,La moyenne de \(\omega_n'\) est donnée pour information ; elle n'est pas utilisée pour la suite des calculs (on retient \(\omega_n\) issu de EX2, plus reproductible — cf.\ §\ref{sec:synthese}).
 
 \subsubsection{Vérification \texorpdfstring{\(\omega_n \gg \delta'\)}{wn >> delta prime} et discussion}
 
@@ -354,7 +360,14 @@ Le ratio
 \]
 est nettement plus petit qu'en EX2 (37). L'hypothèse \(\omega_n \gg \delta'\) reste utilisable, mais avec une marge limitée : c'est précisément l'effet du freinage électromagnétique \(K_u^2/R\) qui se rajoute au frottement visqueux. Cela explique aussi pourquoi la pseudo-pulsation mesurée \(\omega_0'\) est plus faible que \(\omega_0\) (\(\omega_0'^2 = \omega_n^2 - \delta'^2\)). La cohérence avec EX2 est bonne pour l'essai gauche (\(\omega_n'=\SI{117{,}31}{rad/s}\)), alors que l'essai droite donne une valeur plus basse (\(\SI{98{,}63}{rad/s}\)). La moyenne EX3 (\(\SI{107{,}97}{rad/s}\)) s'écarte donc d'environ \(\SI{8}{\%}\) de la valeur EX2 ; pour le calcul final de \(K_r\), on retient \(\omega_n\) issu de EX2, plus reproductible et non perturbé par le court-circuit.
 
-La dispersion droite/gauche est plus importante en EX3 qu'en EX2 (\(\delta'\) varie de \(\pm\!\SI{30}{\%}\) entre les deux côtés, et \(\omega_0'\) varie aussi sensiblement). Elle tient au faible nombre de pseudo-périodes observables avant extinction du signal (4 à 5 extrema seulement), ainsi qu'à une détection de pics plus sensible au bruit sur le courant. La moyenne des deux essais reste exploitable pour estimer l'augmentation globale d'amortissement \(\delta'-\delta\), mais elle constitue la principale limite d'incertitude sur \(J\).
+La dispersion droite/gauche est plus importante en EX3 qu'en EX2 (\(\delta'\) varie de \(\pm\!\SI{30}{\%}\) entre les deux côtés, et \(\omega_0'\) varie aussi sensiblement). Plusieurs causes se cumulent :
+\begin{itemize}
+    \item le faible nombre de pseudo-périodes observables avant extinction du signal (4 à 5 extrema seulement) limite la précision du décrément logarithmique ;
+    \item la détection des pics est plus sensible au bruit sur le courant que sur la tension induite (signal plus faible en court-circuit) ;
+    \item une asymétrie résiduelle du ressort de torsion (déjà visible en EX2 sur l'amplitude initiale, cf.\ §\ref{sec:strat_ident}) modifie le \(\Delta\alpha_{\max}\) effectif d'un côté à l'autre ;
+    \item la résistance non nulle de la sonde de courant insérée en court-circuit modifie légèrement la résistance totale \(R_{\text{eff}}\), donc le terme \(K_u^2/R\) qui domine \(\delta'\).
+\end{itemize}
+La moyenne des deux essais reste exploitable pour estimer l'augmentation globale d'amortissement \(\delta'-\delta\), mais elle constitue la principale limite d'incertitude sur \(J\) ; faire confiance à la moyenne plutôt qu'à un seul essai se justifie par l'absence de critère permettant de privilégier l'un ou l'autre côté (les deux essais sont symétriques par construction).
 
 \newpage
 \subsection{Synthèse des paramètres identifiés}
@@ -362,35 +375,36 @@ La dispersion droite/gauche est plus importante en EX3 qu'en EX2 (\(\delta'\) va
 
 \subsubsection{Calcul de \texorpdfstring{\(J\)}{J}, \texorpdfstring{\(C_v\)}{Cv}, \texorpdfstring{\(K_r\)}{Kr}}
 
-À partir de \eqref{eq:J} avec \(R = \SI{25{,}31}{\ohm}\), \(K_u = \SI{71{,}3e-3}{V.s/rad}\), \(\bar{\delta} = \SI{3{,}18}{rad/s}\) et \(\bar{\delta'} = \SI{26{,}17}{rad/s}\) :
+À partir de \eqref{eq:J} avec \(R = \SI{25{,}31}{\ohm}\), \(\bar{K_u} = \SI{71{,}4e-3}{V.s/rad}\), \(\bar{\delta} = \SI{3{,}18}{rad/s}\) et \(\bar{\delta'} = \SI{26{,}17}{rad/s}\) :
 \[
-J \;=\; \frac{K_u^2}{2\,R\,(\bar{\delta'} - \bar{\delta})}
-\;=\; \frac{(71{,}3\!\times\!10^{-3})^2}{2 \times 25{,}31 \times 22{,}99}
-\;\approx\; \boxed{\SI{4{,}37e-6}{kg.m^2}}.
+J \;=\; \frac{\bar{K_u}^2}{2\,R\,(\bar{\delta'} - \bar{\delta})}
+\;=\; \frac{(71{,}4\!\times\!10^{-3})^2}{2 \times 25{,}31 \times 22{,}99}
+\;\approx\; \boxed{\SI{4{,}38e-6}{kg.m^2}}.
 \]
 Puis :
 \[
-C_v \;=\; 2\,J\,\bar{\delta} \;=\; 2 \times 4{,}37\!\times\!10^{-6} \times 3{,}18 \;\approx\; \SI{2{,}78e-5}{N.m.s/rad},
+C_v \;=\; 2\,J\,\bar{\delta} \;=\; 2 \times 4{,}38\!\times\!10^{-6} \times 3{,}18 \;\approx\; \SI{2{,}79e-5}{N.m.s/rad},
 \]
 \[
-K_r \;=\; J\,\bar{\omega_n}^2 \;=\; 4{,}37\!\times\!10^{-6} \times (117{,}91)^2 \;\approx\; \SI{6{,}08e-2}{N.m/rad}.
+K_r \;=\; J\,\bar{\omega_n}^2 \;=\; 4{,}38\!\times\!10^{-6} \times (117{,}91)^2 \;\approx\; \SI{6{,}09e-2}{N.m/rad}.
 \]
+\noindent\textbf{Remarque sur les incertitudes.} \(J\) est l'estimation la plus incertaine du tableau : elle dépend de la différence \(\bar{\delta'} - \bar{\delta}\), or \(\delta'\) lui-même varie de \(\pm\SI{30}{\%}\) entre les essais droite et gauche en EX3 (cf.\ §\ref{sec:synthese}, discussion). La cohérence finale est néanmoins préservée par le fait que \(J\) intervient toujours combiné aux mêmes paramètres de raideur et de frottement.
 
 \subsubsection{Tableau récapitulatif}
 
 \begin{table}[H]
 \centering
 \caption{Paramètres identifiés de l'actionneur à bobine mobile}
-\begin{tabular}{llrll}
+\begin{tabular}{llrl}
 \toprule
-Paramètre & Symbole & Valeur & Unité & Source \\
+Paramètre & Symbole & Valeur & Unité\\
 \midrule
-Résistance de bobine     & \(R\)         & 25{,}31              & \si{\ohm}        & EX1 maintenu \\
-Inductance de bobine     & \(L\)         & 3{,}07               & \si{mH}          & EX1 maintenu \\
-Constante électroméca.   & \(K_u = K_t\) & \(71{,}3\!\times\!10^{-3}\) & \si{V.s/rad} & EX2 \\
-Moment d'inertie         & \(J\)         & \(4{,}37\!\times\!10^{-6}\) & \si{kg.m^2} & EX2 + EX3 \\
-Amortissement visqueux   & \(C_v\)       & \(2{,}78\!\times\!10^{-5}\) & \si{N.m.s/rad}& EX2 + EX3 \\
-Raideur de rappel        & \(K_r\)       & \(6{,}08\!\times\!10^{-2}\) & \si{N.m/rad}  & EX2 + EX3 \\
+Résistance de bobine     & \(R\)         & 25{,}31              & \si{\ohm}       \\
+Inductance de bobine     & \(L\)         & 3{,}07               & \si{mH}          \\
+Constante électroméca.   & \(K_u = K_t\) & \(71{,}4\!\times\!10^{-3}\) & \si{V.s/rad} \\
+Moment d'inertie         & \(J\)         & \(4{,}38\!\times\!10^{-6}\) & \si{kg.m^2}\\
+Amortissement visqueux   & \(C_v\)       & \(2{,}79\!\times\!10^{-5}\) & \si{N.m.s/rad}\\
+Raideur de rappel        & \(K_r\)       & \(6{,}09\!\times\!10^{-2}\) & \si{N.m/rad} \\
 \bottomrule
 \end{tabular}
 \label{tab:synthese}
@@ -400,9 +414,9 @@ Raideur de rappel        & \(K_r\)       & \(6{,}08\!\times\!10^{-2}\) & \si{N.m
 
 \[
 \tau_{el} = \frac{L}{R} \approx \SI{121}{\micro s}, \qquad
-\tau_{m\acute{e}c} = \frac{1}{\delta} \approx \SI{315}{ms}.
+\tau_{m\acute{e}c} = \frac{1}{\delta} = \frac{2J}{C_v} \approx \SI{315}{ms}.
 \]
-Le rapport \(\tau_{el}/\tau_{m\acute{e}c} \approx 4\!\times\!10^{-4}\) confirme nettement la séparation des dynamiques. Le terme \(L\,di/dt\) peut donc être négligé en EX3, ce qui justifie a posteriori \eqref{eq:i_short} et la formule \eqref{eq:J} pour \(J\).
+La constante de temps mécanique correspond à la décroissance de l'enveloppe pseudo-périodique en circuit ouvert ; elle s'identifie au rapport \(2J/C_v\) directement issu des paramètres physiques. Le rapport \(\tau_{el}/\tau_{m\acute{e}c} \approx 4\!\times\!10^{-4}\) confirme nettement la séparation des dynamiques. Le terme \(L\,di/dt\) peut donc être négligé en EX3, ce qui justifie a posteriori \eqref{eq:i_short} et la formule \eqref{eq:J} pour \(J\).
 
 \subsubsection{Calcul du nombre de spires (§2.2.4--3)}
 
@@ -414,10 +428,11 @@ T_{em} \;=\; N \cdot B \cdot 2 \int_{r_{int}}^{r_{ext}} i\,r\,dr
 soit \(K_t = N\,B\,(r_{ext}^2 - r_{int}^2)\). Avec \(B = \SI{0{,}45}{T}\), \(r_{ext} = \SI{30}{mm}\), \(r_{int} = \SI{15}{mm}\) :
 \[
 N \;=\; \frac{K_t}{B\,(r_{ext}^2 - r_{int}^2)}
-\;=\; \frac{71{,}3\!\times\!10^{-3}}{0{,}45 \times 6{,}75\!\times\!10^{-4}}
+\;=\; \frac{71{,}4\!\times\!10^{-3}}{0{,}45 \times 6{,}75\!\times\!10^{-4}}
 \;\approx\; \boxed{N \approx 235 \text{ spires}}.
 \]
-Cet ordre de grandeur est cohérent avec une bobine VCM de petit actionneur, où la masse de cuivre est minimisée pour limiter \(J\) tout en conservant une constante de couple suffisante.
+
+\paragraph{Vérification par estimation de masse.} La longueur d'une spire au rayon moyen \(r_m = (r_{ext}+r_{int})/2 = \SI{22{,}5}{mm}\) vaut \(\ell_{sp} \approx 2\pi r_m \approx \SI{141}{mm}\), soit une longueur totale de fil \(L_{Cu} \approx N\,\ell_{sp} \approx \SI{33}{m}\). Pour un fil de cuivre de diamètre typique \(d \approx \SI{0{,}1}{mm}\) (section \(\SI{7{,}9e-9}{m^2}\)) et de masse volumique \(\rho_{Cu} = \SI{8960}{kg/m^3}\), la masse de cuivre vaut \(m_{Cu} \approx \rho_{Cu}\,L_{Cu}\,\pi d^2/4 \approx \SI{2{,}3}{g}\). Cette valeur de quelques grammes est cohérente avec le moment d'inertie \(J \approx \SI{4{,}4e-6}{kg.m^2}\) pour une partie mobile au rayon \(r_m\), confirmant l'ordre de grandeur de \(N\).
 
 \subsubsection{Discussion physique}
 

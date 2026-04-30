@@ -1,4 +1,4 @@
-\section{Modèle de connaissance}
+\section{Partie théorique}
 
 \subsection{Principe de l'actionneur à bobine mobile}
 
@@ -190,7 +190,7 @@ Pour \(\omega_n > \delta\) (régime pseudo-périodique), la solution générale 
 \begin{equation}
 \Omega(t) = e^{-\delta t}\bigl[C_1\cos(\omega_0\,t) + C_2\sin(\omega_0\,t)\bigr], \qquad \omega_0 = \sqrt{\omega_n^2 - \delta^2}.
 \end{equation}
-À l'instant du lâcher, l'actionneur est immobile à la position extrême : \(\alpha(0) = \Delta\alpha_{\max}\) et \(\Omega(0) = 0\). De plus, \eqref{eq:meca_libre_omega1} évaluée en \(t=0\) donne \(\dot\Omega(0) = -K_r\,\Delta\alpha_{\max}/J = -\omega_n^2\,\Delta\alpha_{\max}\). Les conditions \(\Omega(0)=0\) et \(\dot\Omega(0) = -\omega_n^2\,\Delta\alpha_{\max}\) imposent \(C_1 = 0\) et \(C_2 = -\omega_n^2\,\Delta\alpha_{\max}/\omega_0\), d'où :
+À l'instant du lâcher, l'actionneur est immobile à la position extrême : \(\alpha(0) = \Delta\alpha_{\max}\) et \(\Omega(0) = 0\). De plus, \eqref{eq:meca_libre_omega1} évaluée en \(t=0\) donne \(\dot\Omega(0) = -K_r\,\Delta\alpha_{\max}/J = -\omega_n^2\,\Delta\alpha_{\max}\). Cette relation suppose implicitement \(i(0) = 0\), automatiquement vérifié en circuit ouvert (EX2). Le cas court-circuit (EX3) sera traité en §\ref{sec:laplace} avec \(i_0 = 0\) comme condition initiale au lâcher également (le courant est forcé à zéro tant que la bobine ne bouge pas). Les conditions \(\Omega(0)=0\) et \(\dot\Omega(0) = -\omega_n^2\,\Delta\alpha_{\max}\) imposent \(C_1 = 0\) et \(C_2 = -\omega_n^2\,\Delta\alpha_{\max}/\omega_0\), d'où :
 \begin{equation}
 \Omega(t) \;=\; -\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_0}\,e^{-\delta t}\sin(\omega_0\,t).
 \label{eq:alpha_t}
@@ -212,7 +212,7 @@ Lorsque l'amortissement est faible, \(\omega_0 \simeq \omega_n\) et \(\omega_n^2
 \[
 u_{im}(t) \;\approx\; -\,K_u\,\Delta\alpha_{\max}\,\omega_n\,e^{-\delta t}\sin(\omega_n\,t).
 \]
-La validité de cette simplification sera contrôlée \emph{a posteriori} par le ratio \(\omega_n/\delta\).
+La validité de cette simplification sera contrôlée \emph{a posteriori} par le ratio \(\omega_n/\delta\). Pour l'identification numérique de \(K_u\) on garde toutefois la formule exacte \eqref{eq:Ku_ident} de manière à ne pas introduire de biais lié à l'amortissement résiduel (cf.\ §\ref{sec:synthese}).
 
 \paragraph{Identification.}
 La pseudo-pulsation \(\omega_0\) se lit directement sur la mesure (\(\omega_0 = 2\pi/T_0\)).
