@@ -27,6 +27,44 @@ L'actionneur étudié est un transducteur électrodynamique à déflexion angula
 \label{fig:schema_bloc}
 \end{figure}
 
+\subsection{Couple électromagnétique et tension induite}
+
+\subsubsection{Couple électromagnétique}
+
+La force de Laplace exercée sur un conducteur de longueur \(\ell\) parcouru par un courant \(i\) dans un champ magnétique \(B\) s'écrit \(F = B\,\ell\,i\). Pour la bobine étudiée, la longueur active radiale d'un côté de spire vaut \(\ell = R_e - R_i\), où \(R_e\) et \(R_i\) sont les rayons extérieur et intérieur de la bobine. Pour \(N\) spires :
+\begin{equation}
+F = B\,(R_e - R_i)\,N\,i.
+\end{equation}
+Chaque spire possède deux côtés actifs diamétralement opposés, situés au rayon moyen \(r = (R_e + R_i)/2\). Le couple électromagnétique total est donc :
+\begin{equation}
+T_{em} = 2\,r\,F = 2\cdot\frac{R_e + R_i}{2}\cdot B\,(R_e - R_i)\,N\,i = B\,(R_e^2 - R_i^2)\,N\,i.
+\end{equation}
+On en déduit la constante de couple :
+\begin{equation}
+K_t = B\,(R_e^2 - R_i^2)\,N.
+\label{eq:Kt_geom}
+\end{equation}
+
+\subsubsection{Tension induite}
+
+Lorsque la bobine se déplace à la vitesse angulaire \(\dot\alpha\) dans le champ \(B\), la vitesse linéaire d'un côté actif est \(v = r\,\dot\alpha\). La tension induite par côté de spire vaut \(u_i = B\,\ell\,v\). En sommant sur les deux côtés actifs et les \(N\) spires :
+\begin{equation}
+u_{im} = 2\,B\,(R_e - R_i)\cdot\frac{R_e + R_i}{2}\,N\,\dot\alpha = B\,(R_e^2 - R_i^2)\,N\,\dot\alpha.
+\end{equation}
+On identifie ainsi la constante de tension induite :
+\begin{equation}
+K_u = B\,(R_e^2 - R_i^2)\,N.
+\label{eq:Ku_geom}
+\end{equation}
+
+\paragraph{Identité \(K_u = K_t\) en unités SI.}
+Les expressions \eqref{eq:Kt_geom} et \eqref{eq:Ku_geom} montrent que les deux constantes sont géométriquement identiques :
+\begin{equation}
+\boxed{\,K_u = K_t \equiv K = B\,(R_e^2 - R_i^2)\,N.\,}
+\label{eq:Ku_eq_Kt}
+\end{equation}
+Ce résultat est cohérent avec le bilan énergétique \(P_{m\acute{e}c} = T_{em}\,\dot\alpha = K_t\,i\,\dot\alpha\) et \(P_{\acute{e}lec} = u_{im}\,i = K_u\,\dot\alpha\,i\), qui impose \(K_u = K_t\) en unités SI cohérentes. Cette identité sera utilisée pour la suite, et \eqref{eq:Ku_geom} permettra d'extraire le nombre de spires \(N\) à partir de \(K_u\) mesuré.
+
 \subsection{Équations de mouvement}
 
 \subsubsection{Équation électrique}
@@ -46,10 +84,7 @@ J\,\ddot{\alpha}(t) \;=\; K_t\,i(t) \;-\; C_v\,\dot{\alpha}(t) \;-\; K_r\,\alpha
 \label{eq:meca}
 \end{equation}
 
-\paragraph{Hypothèse \(K_u = K_t\) en unités SI.}
-Le bilan énergétique d'un transducteur idéal ($P_{m\acute{e}c} = T_{em}\,\dot{\alpha} = K_t\,i\,\dot{\alpha}$ et $P_{\acute{e}lec} = u_{im}\,i = K_u\,\dot{\alpha}\,i$) impose, en unités SI cohérentes, l'égalité \(K_u = K_t \equiv K\). Cette identité est utilisée par la suite.
-
-\subsection{Constantes de temps caractéristiques}
+\subsubsection{Constantes de temps caractéristiques}
 
 Le système comporte deux dynamiques de natures différentes :
 \begin{itemize}
@@ -78,89 +113,163 @@ L'état stationnaire fournit \(R = \Delta u/\Delta i_{\infty}\) et la constante 
 
 \subsubsection{EX2 -- Bobine ouverte : \texorpdfstring{\(\delta\)}{d}, \texorpdfstring{\(\omega_0\)}{w0} et \texorpdfstring{\(K_u\)}{Ku}}
 
-En circuit ouvert, \(i = 0\) et la f.c.e.m.\ apparaît directement aux bornes de la bobine : \(u_{im}(t) = K_u\,\dot{\alpha}(t)\). L'équation \eqref{eq:meca} devient :
+En circuit ouvert, \(i = 0\) et le couple électromagnétique s'annule. L'équation mécanique \eqref{eq:meca} devient :
 \begin{equation}
-\ddot{\alpha} + \frac{C_v}{J}\,\dot{\alpha} + \frac{K_r}{J}\,\alpha = 0
-\;\Leftrightarrow\;
-\ddot{\alpha} + 2\delta\,\dot{\alpha} + \omega_n^2\,\alpha = 0,
+J\,\dot\Omega(t) \;=\; -\,K_r\,\alpha(t) \;-\; C_v\,\Omega(t),
+\label{eq:meca_libre_omega1}
+\end{equation}
+avec \(\Omega = \dot\alpha\). En dérivant \eqref{eq:meca_libre_omega1} par rapport au temps et en utilisant \(\dot\alpha = \Omega\), on élimine la position et on obtient une équation différentielle du second ordre directement en \(\Omega(t)\) :
+\begin{equation}
+J\,\ddot\Omega + C_v\,\dot\Omega + K_r\,\Omega = 0
+\;\Longleftrightarrow\;
+\ddot\Omega + 2\delta\,\dot\Omega + \omega_n^2\,\Omega = 0,
 \label{eq:meca_libre}
 \end{equation}
-avec \(\delta = C_v/(2J)\) et \(\omega_n^2 = K_r/J\). Avec les conditions initiales \(\alpha(0) = \Delta\alpha_{\max}\) et \(\dot\alpha(0) = 0\), la solution amortie pour \(\omega_n > \delta\) est :
+avec, par identification :
 \begin{equation}
-\alpha(t) \;=\; \Delta\alpha_{\max}\,e^{-\delta t}\!\left[\cos(\omega_d\,t) + \frac{\delta}{\omega_d}\sin(\omega_d\,t)\right],
-\quad \omega_d = \sqrt{\omega_n^2 - \delta^2}.
+\delta = \frac{C_v}{2J}, \qquad \omega_n^2 = \frac{K_r}{J}.
+\end{equation}
+
+\paragraph{Solution avec conditions initiales.}
+Pour \(\omega_n > \delta\) (régime pseudo-périodique), la solution générale s'écrit (annexe A.1) :
+\begin{equation}
+\Omega(t) = e^{-\delta t}\bigl[C_1\cos(\omega_0\,t) + C_2\sin(\omega_0\,t)\bigr], \qquad \omega_0 = \sqrt{\omega_n^2 - \delta^2}.
+\end{equation}
+À l'instant du lâcher, l'actionneur est immobile à la position extrême : \(\alpha(0) = \Delta\alpha_{\max}\) et \(\Omega(0) = 0\). De plus, \eqref{eq:meca_libre_omega1} évaluée en \(t=0\) donne \(\dot\Omega(0) = -K_r\,\Delta\alpha_{\max}/J = -\omega_n^2\,\Delta\alpha_{\max}\). Les conditions \(\Omega(0)=0\) et \(\dot\Omega(0) = -\omega_n^2\,\Delta\alpha_{\max}\) imposent \(C_1 = 0\) et \(C_2 = -\omega_n^2\,\Delta\alpha_{\max}/\omega_0\), d'où :
+\begin{equation}
+\Omega(t) \;=\; -\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_0}\,e^{-\delta t}\sin(\omega_0\,t).
 \label{eq:alpha_t}
 \end{equation}
 
-En dérivant et après simplification :
+\paragraph{Tension induite de mouvement.}
+La bobine étant ouverte, \(i = 0\) et \eqref{eq:elec} se réduit à \(u(t) = K_u\,\Omega(t)\). On a donc :
 \begin{equation}
-\dot{\alpha}(t) \;=\; -\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_d}\,e^{-\delta t}\sin(\omega_d\,t),
-\label{eq:omega_t}
-\end{equation}
-d'où la tension induite :
-\begin{equation}
-u_{im}(t) \;=\; -K_u\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_d}\,e^{-\delta t}\sin(\omega_d\,t).
+u_{im}(t) \;=\; -\,K_u\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_0}\,e^{-\delta t}\sin(\omega_0\,t).
 \label{eq:uim_t}
+\end{equation}
+En fonction des paramètres physiques \((J, K_u, C_v, K_r)\), \eqref{eq:uim_t} s'écrit :
+\begin{equation}
+u_{im}(t) = -\,K_u\,\Delta\alpha_{\max}\,\frac{K_r/J}{\sqrt{K_r/J - C_v^2/(4J^2)}}\,e^{-\frac{C_v}{2J}\,t}\sin\!\left(\sqrt{\tfrac{K_r}{J} - \tfrac{C_v^2}{4J^2}}\;t\right).
 \end{equation}
 
 \paragraph{Approximation \(\omega_n \gg \delta\).}
-Lorsque l'amortissement est faible, \(\omega_d \simeq \omega_n\) et \(\omega_n^2/\omega_d \simeq \omega_n\). L'expression \eqref{eq:uim_t} devient :
+Lorsque l'amortissement est faible, \(\omega_0 \simeq \omega_n\) et \(\omega_n^2/\omega_0 \simeq \omega_n\). L'expression \eqref{eq:uim_t} se simplifie en :
 \[
-u_{im}(t) \;\approx\; -K_u\,\Delta\alpha_{\max}\,\omega_n\,e^{-\delta t}\sin(\omega_n\,t).
+u_{im}(t) \;\approx\; -\,K_u\,\Delta\alpha_{\max}\,\omega_n\,e^{-\delta t}\sin(\omega_n\,t).
 \]
-La validité de cette simplification sera contrôlée par le ratio \(\omega_n/\delta\).
+La validité de cette simplification sera contrôlée \emph{a posteriori} par le ratio \(\omega_n/\delta\).
 
 \paragraph{Identification.}
-L'enveloppe extrapolée à l'instant du lâcher (\(t = 0^+\)) vaut :
+La pseudo-pulsation \(\omega_0\) se lit directement sur la mesure (\(\omega_0 = 2\pi/T_0\)).
+
+\smallskip
+\noindent\emph{Décrément logarithmique.}
+L'enveloppe exponentielle \(e^{-\delta t}\) impose, entre deux crêtes successives \(\hat U_1\) (instant \(t_1\)) et \(\hat U_2\) (instant \(t_2 = t_1 + T_0\)) de même signe, le rapport :
 \[
-U_{\text{env},0} \;=\; K_u\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_d},
-\qquad\text{d'où}\qquad
-\boxed{\;K_u \;=\; \frac{U_{\text{env},0}\;\omega_d}{\Delta\alpha_{\max}\,\omega_n^2}\;\approx\;\frac{U_{\text{env},0}}{\Delta\alpha_{\max}\,\omega_n}.\;}
+\frac{\hat U_1}{\hat U_2} \;=\; \frac{e^{-\delta\,t_1}}{e^{-\delta\,(t_1+T_0)}} \;=\; e^{\delta\,T_0}.
 \]
-La pseudo-pulsation \(\omega_d\) se lit directement sur la mesure (\(\omega_d = 2\pi/T_d\)), et le coefficient \(\delta\) s'obtient par régression log-linéaire sur les amplitudes des extrema. On en déduit :
+En passant au logarithme, on obtient directement le coefficient d'amortissement :
+\begin{equation}
+\boxed{\;\delta \;=\; \frac{1}{T_0}\,\ln\!\left(\frac{\hat U_1}{\hat U_2}\right)\;}
+\label{eq:delta_decrement}
+\end{equation}
+Cette mesure se lit directement à l'oscilloscope avec deux curseurs placés sur deux crêtes successives. La pulsation propre non amortie est alors :
+\begin{equation}
+\omega_n \;=\; \sqrt{\omega_0^2 + \delta^2}.
+\label{eq:omegan_ident}
+\end{equation}
+
+\smallskip
+\noindent\emph{Constante de tension induite.}
+Enfin, la première crête de \(u_{im}\), atteinte à \(t \approx T_0/4\), vaut en module :
 \[
-\frac{C_v}{J} = 2\,\delta, \qquad \frac{K_r}{J} = \omega_n^2 = \omega_d^2 + \delta^2.
+\hat U_1 \;=\; K_u\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_0}\,e^{-\delta\,T_0/4},
+\]
+d'où la formule d'identification de la constante de tension induite :
+\begin{equation}
+\boxed{\;K_u \;=\; \frac{\hat U_1\;\omega_0}{\omega_n^2\,\Delta\alpha_{\max}\,e^{-\delta\,T_0/4}}\;}
+\label{eq:Ku_ident}
+\end{equation}
+On en déduit également :
+\[
+\frac{C_v}{J} = 2\,\delta, \qquad \frac{K_r}{J} = \omega_n^2 = \omega_0^2 + \delta^2.
 \]
 
 \subsubsection{EX3 -- Bobine court-circuitée : \texorpdfstring{\(J\)}{J}, \texorpdfstring{\(C_v\)}{Cv}, \texorpdfstring{\(K_r\)}{Kr}}
 
 Lorsque les bornes de la bobine sont reliées (\(u = 0\)) et en négligeant \(L\,di/dt\) sous l'hypothèse \(\tau_{el} \ll \tau_{m\acute{e}c}\), \eqref{eq:elec} donne :
 \begin{equation}
-i(t) \;\approx\; -\,\frac{K_u}{R}\,\dot{\alpha}(t).
+i(t) \;\approx\; -\,\frac{K_u}{R}\,\Omega(t).
 \label{eq:i_short}
 \end{equation}
-En substituant dans \eqref{eq:meca} :
+Le couple électromagnétique vaut alors \(T_{em} = K_t\,i = -\,(K_t K_u/R)\,\Omega\). En substituant dans \eqref{eq:meca} et en utilisant \(K_t = K_u\) :
 \begin{equation}
-J\,\ddot{\alpha} + \underbrace{\!\left(C_v + \frac{K_u^2}{R}\right)\!}_{=\,2J\,\delta'}\dot{\alpha} + K_r\,\alpha = 0,
+J\,\dot\Omega \;=\; -\,K_r\,\alpha \;-\; \!\left(C_v + \frac{K_u^2}{R}\right)\!\Omega.
+\label{eq:meca_short_omega1}
+\end{equation}
+Cette équation a exactement la même forme que \eqref{eq:meca_libre_omega1}, à condition de substituer le frottement effectif :
+\[
+C_v \;\longrightarrow\; C_v' \;=\; C_v + \frac{K_u^2}{R}.
+\]
+Toute la résolution menée pour le circuit ouvert se transpose donc directement. En dérivant par rapport au temps, on obtient :
+\begin{equation}
+\ddot\Omega + 2\delta'\,\dot\Omega + \omega_n^2\,\Omega = 0,
 \label{eq:meca_short}
 \end{equation}
-soit la même équation différentielle qu'en \eqref{eq:meca_libre} avec un amortissement effectif augmenté :
-\[
-\delta' \;=\; \delta + \frac{K_u^2}{2JR}.
-\]
+avec un nouvel amortissement \(\delta'\) qui intègre le freinage électromagnétique :
+\begin{equation}
+\delta' \;=\; \delta + \frac{K_u^2}{2JR} \;=\; \delta + \frac{K_t\,K_u}{2JR}.
+\label{eq:deltap}
+\end{equation}
 La pulsation propre non amortie \(\omega_n\) reste inchangée puisque \(K_r/J\) ne dépend pas du circuit. L'écart \(\delta' - \delta\) est entièrement attribuable au freinage électromagnétique :
 \begin{equation}
-\boxed{\;J \;=\; \frac{K_u^2}{2\,R\,(\delta' - \delta)}\;}
+\boxed{\;J \;=\; \frac{K_t\,K_u}{2\,R\,(\delta' - \delta)} \;=\; \frac{K_u^2}{2\,R\,(\delta' - \delta)}\;}
 \label{eq:J}
 \end{equation}
 puis :
 \[
 C_v = 2\,J\,\delta, \qquad K_r = J\,\omega_n^2.
 \]
-Le courant induit, par \eqref{eq:i_short} et \eqref{eq:omega_t} avec \(\delta\) remplacé par \(\delta'\), s'écrit :
+
+\paragraph{Courant induit.}
+Avec les mêmes conditions initiales \(\alpha(0) = \Delta\alpha_{\max}\), \(\Omega(0) = 0\), la solution de \eqref{eq:meca_short} est :
 \begin{equation}
-i(t) \;=\; \frac{K_u\,\Delta\alpha_{\max}}{R}\,\frac{\omega_n^2}{\omega_d'}\,e^{-\delta' t}\sin(\omega_d'\,t),
-\quad \omega_d' = \sqrt{\omega_n^2 - \delta'^2}.
+\Omega(t) \;=\; -\,\Delta\alpha_{\max}\,\frac{\omega_n^2}{\omega_0'}\,e^{-\delta' t}\sin(\omega_0'\,t), \qquad \omega_0' = \sqrt{\omega_n^2 - \delta'^2}.
+\end{equation}
+Le courant induit, par \eqref{eq:i_short}, vaut :
+\begin{equation}
+i(t) \;=\; \frac{K_u\,\Delta\alpha_{\max}}{R}\,\frac{\omega_n^2}{\omega_0'}\,e^{-\delta' t}\sin(\omega_0'\,t).
 \label{eq:i_t}
+\end{equation}
+En fonction des paramètres physiques \((J, K_u, K_t, C_v, K_r, R)\), avec \(\omega_n^2 = K_r/J\) et \(\delta' = (C_v + K_t K_u/R)/(2J)\) :
+\begin{equation}
+i(t) = \frac{K_u\,\Delta\alpha_{\max}}{R}\,\frac{K_r/J}{\sqrt{K_r/J - \delta'^2}}\,e^{-\delta' t}\sin\!\left(\sqrt{\tfrac{K_r}{J} - \delta'^2}\;t\right).
 \end{equation}
 
 \paragraph{Validité de \(\omega_n \gg \delta'\).}
 Le freinage électromagnétique étant nettement supérieur au frottement visqueux mécanique, l'approximation \(\omega_n \gg \delta'\) n'est pas garantie en court-circuit. Le ratio \(\omega_n/\delta'\) sera donc évalué expérimentalement.
 
+\paragraph{Identification.}
+La même méthode du décrément logarithmique s'applique sur le courant. Avec deux crêtes successives de même signe \(\hat I_1\) et \(\hat I_2\) séparées de \(T_0'\) :
+\begin{equation}
+\delta' \;=\; \frac{1}{T_0'}\,\ln\!\left(\frac{\hat I_1}{\hat I_2}\right), \qquad \omega_0' = \frac{2\pi}{T_0'}.
+\label{eq:deltap_decrement}
+\end{equation}
+On vérifie que \(\omega_n^2 = \omega_0'^2 + \delta'^2\) coïncide avec la valeur extraite en EX2 (la raideur \(K_r\) ne dépendant pas du circuit).
+
+\subsection{Détermination du nombre de spires}
+\label{sec:nbre_spires}
+
+Une fois \(K_u\) identifié et connaissant l'induction dans l'entrefer \(B\) ainsi que les rayons \(R_e\) et \(R_i\) de la bobine, la relation géométrique \eqref{eq:Ku_geom} permet de remonter au nombre de spires :
+\begin{equation}
+\boxed{\;N \;=\; \frac{K_u}{B\,(R_e^2 - R_i^2)}\;}
+\label{eq:N_spires}
+\end{equation}
+
 \subsection{Transformées de Laplace sans simplification}
 \label{sec:laplace}
 
-Pour répondre au point §2.2.4-4 de la donnée, on écrit les équations \eqref{eq:elec} et \eqref{eq:meca} dans le domaine de Laplace, sans imposer \(\tau_{el} \ll \tau_{m\acute{e}c}\), et en tenant compte des conditions initiales \(\alpha(0) = \alpha_0\), \(\dot\alpha(0) = \Omega_0\), \(i(0) = i_0\) :
+Pour répondre au point §2.2.4-4 de la donnée, on écrit d'abord les équations générales \eqref{eq:elec} et \eqref{eq:meca} dans le domaine de Laplace, sans imposer \(\tau_{el} \ll \tau_{m\acute{e}c}\), et en tenant compte des conditions initiales \(\alpha(0) = \alpha_0\), \(\dot\alpha(0) = \Omega_0\), \(i(0) = i_0\) :
 \[
 \begin{aligned}
 U(s) &= (R + L\,s)\,I(s) - L\,i_0 + K_u\,\bigl[s\,\alpha(s) - \alpha_0\bigr], \\
@@ -168,17 +277,66 @@ U(s) &= (R + L\,s)\,I(s) - L\,i_0 + K_u\,\bigl[s\,\alpha(s) - \alpha_0\bigr], \\
 \end{aligned}
 \]
 
+\paragraph{Bobine ouverte.}
+Dans l'essai du §2.2.2.1, \(i(t)=0\). En posant \(\Omega=\dot\alpha\), l'équation différentielle obtenue plus haut est :
+\[
+\ddot\Omega + 2\delta\,\dot\Omega + \omega_n^2\,\Omega = 0,
+\qquad
+\delta=\frac{C_v}{2J},\quad \omega_n^2=\frac{K_r}{J}.
+\]
+Sa transformée de Laplace, avec \(\Omega(0)=\Omega_0\) et \(\dot\Omega(0)=\dot\Omega_0\), vaut :
+\begin{equation}
+\bigl(s^2+2\delta s+\omega_n^2\bigr)\Omega(s)
+= s\Omega_0+\dot\Omega_0+2\delta\Omega_0.
+\label{eq:laplace_open_general}
+\end{equation}
+Pour le lâcher depuis la butée, \(\alpha(0)=\alpha_0=\Delta\alpha_{\max}\), \(\Omega_0=0\) et \(\dot\Omega_0=-\omega_n^2\alpha_0\), d'où :
+\begin{equation}
+\Omega(s)=\frac{-\omega_n^2\alpha_0}{s^2+2\delta s+\omega_n^2},
+\qquad
+U_{im}(s)=K_u\,\Omega(s).
+\label{eq:laplace_open_release}
+\end{equation}
+
+\paragraph{Bobine court-circuitée sans négliger l'inductance.}
+Dans l'essai du §2.2.3.1, \(u(t)=0\), mais on garde le terme \(L\,di/dt\). Les équations couplées sont donc :
+\[
+L\frac{di}{dt}+R\,i+K_u\,\Omega=0,
+\qquad
+J\dot\Omega+C_v\Omega+K_r\alpha=K_t i.
+\]
+En éliminant \(i\) et \(\alpha\), on obtient une équation différentielle d'ordre 3 pour la vitesse :
+\begin{equation}
+LJ\,\Omega^{(3)}
++(LC_v+RJ)\,\ddot\Omega
++(LK_r+RC_v+K_tK_u)\,\dot\Omega
++RK_r\,\Omega = 0.
+\label{eq:short_full_ode}
+\end{equation}
+Avec \(\Omega(0)=\Omega_0\), \(\dot\Omega(0)=\dot\Omega_0\) et \(\ddot\Omega(0)=\ddot\Omega_0\), sa transformée de Laplace s'écrit :
+\begin{equation}
+\begin{aligned}
+&\Bigl[LJ\,s^3+(LC_v+RJ)s^2+(LK_r+RC_v+K_tK_u)s+RK_r\Bigr]\Omega(s) \\
+&= LJ\bigl(s^2\Omega_0+s\dot\Omega_0+\ddot\Omega_0\bigr)
++(LC_v+RJ)\bigl(s\Omega_0+\dot\Omega_0\bigr)
++(LK_r+RC_v+K_tK_u)\Omega_0.
+\end{aligned}
+\label{eq:laplace_short_full}
+\end{equation}
+Pour un lâcher depuis la butée au repos, avec \(i_0=0\), on a \(\Omega_0=0\), \(\dot\Omega_0=-K_r\alpha_0/J\) et, par l'équation électrique, \(\dot i(0)=0\), donc \(\ddot\Omega_0=C_vK_r\alpha_0/J^2\).
+
 En conditions initiales nulles (\(i_0 = \alpha_0 = \Omega_0 = 0\)), la fonction de transfert globale \(\alpha(s)/U(s)\) s'obtient par élimination de \(I(s)\) :
 \begin{equation}
 \frac{\alpha(s)}{U(s)} \;=\; \frac{K_t}{(R + L s)\,(J s^2 + C_v s + K_r) + K_u K_t\,s}.
 \label{eq:FT}
 \end{equation}
-Le dénominateur est un polynôme du \emph{troisième} ordre en \(s\) ; il se factorise en un mode électrique rapide à \(s \simeq -R/L\) et une dynamique mécanique d'ordre 2 à \(s \simeq -\delta' \pm j\omega_d'\) lorsque \(\tau_{el} \ll \tau_{m\acute{e}c}\), retrouvant ainsi le modèle d'ordre 2 utilisé pour l'identification.
+Le dénominateur est un polynôme du \emph{troisième} ordre en \(s\) ; il se factorise en un mode électrique rapide à \(s \simeq -R/L\) et une dynamique mécanique d'ordre 2 à \(s \simeq -\delta' \pm j\omega_0'\) lorsque \(\tau_{el} \ll \tau_{m\acute{e}c}\), retrouvant ainsi le modèle d'ordre 2 utilisé pour l'identification.
 
-\subsection{Schéma fonctionnel}
+\subsection{Schéma fonctionnel (bonus §2.2.5)}
 
 \begin{figure}[H]
 \centering
+\resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[>=Stealth, node distance=1.5cm and 1.6cm,
    block/.style={draw, thick, rounded corners=2pt, minimum height=1cm, minimum width=2.4cm, align=center},
    sum/.style={draw, circle, thick, inner sep=1pt, minimum size=5mm}]
@@ -207,7 +365,8 @@ Le dénominateur est un polynôme du \emph{troisième} ordre en \(s\) ; il se fa
 % perturbation de couple (option = 0 ici)
 \node[above=0.4 of sum2] {\scriptsize $T_{ext}=0$};
 
-\end{tikzpicture}
+\end{tikzpicture}%
+}
 \caption{Schéma fonctionnel complet U $\to \alpha$ (bonus §2.2.5)}
 \label{fig:schema_fonctionnel}
 \end{figure}

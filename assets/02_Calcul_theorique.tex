@@ -1,0 +1,357 @@
+\section{Calculs théoriques}
+\subsection{Couple électromagnétique et tension induite}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.35\textwidth]{images/0_schema_Bli.png}
+    \caption{Schéma de représentation du couple dans l'actuatereur électromagnétique}
+    \label{schema_bli}
+\end{figure}
+
+\subsubsection{Couple électromagnétique}
+
+La force de Laplace exercée sur un conducteur parcouru par un courant dans un champ magnétique est donnée par :
+\begin{equation}
+F = B \cdot \ell \cdot i
+\end{equation}
+
+où $\ell$ représente la longueur du fil soumis au champ magnétique. Dans ce cas :
+\begin{equation}
+\ell = R_e - R_i
+\end{equation}
+
+Ainsi :
+\begin{equation}
+F = B \cdot (R_e - R_i) \cdot i
+\end{equation}
+
+Pour une bobine comportant $N$ spires :
+\begin{equation}
+F = B \cdot (R_e - R_i) \cdot N \cdot i
+\end{equation}
+
+Chaque spire possède deux côtés actifs contribuant au couple. Le couple total s’écrit donc :
+\begin{equation}
+T_{em} = 2 \cdot r \cdot F
+\end{equation}
+
+avec le rayon moyen :
+\begin{equation}
+r = \frac{R_e + R_i}{2}
+\end{equation}
+
+Ainsi :
+\begin{equation}
+T_{em} = 2 \cdot \frac{R_e + R_i}{2} \cdot B \cdot (R_e - R_i) \cdot N \cdot i
+\end{equation}
+
+\begin{equation}
+T_{em} = B \cdot (R_e + R_i) \cdot (R_e - R_i) \cdot N \cdot i
+\end{equation}
+
+\begin{equation}
+T_{em} = B \cdot (R_e^2 - R_i^2) \cdot N \cdot i
+\end{equation}
+
+La constante de couple est alors définie par :
+\begin{equation}
+K_T = B \cdot (R_e^2 - R_i^2) \cdot N
+\label{eq:calc_KT}
+\end{equation}
+
+Ainsi :
+\begin{equation}
+T_{em} = K_T \cdot i
+\end{equation}
+
+\subsubsection{Tension induite}
+
+Lors du mouvement de la bobine dans le champ magnétique, une tension est induite dans le conducteur. D’après le cours :
+\begin{equation}
+u_i = B \cdot \ell \cdot v
+\end{equation}
+
+avec :
+\begin{equation}
+\ell = R_e - R_i
+\quad \text{et} \quad
+v = r \cdot \Omega
+\end{equation}
+
+où :
+\begin{equation}
+r = \frac{R_e + R_i}{2}
+\end{equation}
+
+Ainsi, pour une spire :
+\begin{equation}
+u_i = B \cdot (R_e - R_i) \cdot \frac{R_e + R_i}{2} \cdot \Omega
+\end{equation}
+
+En tenant compte des deux côtés actifs :
+\begin{equation}
+u_{im} = 2 \cdot B \cdot (R_e - R_i) \cdot \frac{R_e + R_i}{2} \cdot N \cdot \Omega
+\end{equation}
+
+\begin{equation}
+u_{im} = B \cdot (R_e^2 - R_i^2) \cdot N \cdot \Omega
+\end{equation}
+
+La constante de tension induite est donc :
+\begin{equation}
+K_u = B \cdot (R_e^2 - R_i^2) \cdot N
+\end{equation}
+
+Ainsi :
+\begin{equation}
+    u_{im} = K_u \cdot \Omega
+\end{equation}
+
+Il apparaît que :
+\begin{equation}
+\boxed{K_u = K_T}
+\end{equation}
+
+ce qui est cohérent avec les résultats théoriques pour ce type d’actionneur lorsque les unités du S.I. sont utilisées.
+\newpage
+
+\subsection{Détermination des paramètres électriques de l’actionneur}
+
+La loi d’Ohm généralisée appliquée à un système électromagnétique s’écrit :
+\begin{equation}
+u(t) = R\,i(t) + \frac{d\psi(t)}{dt}
+\end{equation}
+
+où le flux total $\psi$ est la somme du flux propre de la bobine et du flux mutuel entre la bobine et l’aimant :
+\begin{equation}
+\psi = \psi_{bb} + \psi_{ba} = L\,i + N\,\Phi_{ba}
+\end{equation}
+
+En dérivant cette expression, on obtient :
+\begin{equation}
+u(t) = R\,i(t) + L\,\frac{di(t)}{dt} + N\,\frac{d\Phi_{ba}}{dt}
+\end{equation}
+
+Le dernier terme peut être exprimé en fonction de la position angulaire $\alpha$ de l’actionneur :
+\begin{equation}
+u(t) = R\,i(t) + L\,\frac{di(t)}{dt} + N\,\frac{d\Phi_{ba}}{d\alpha} \frac{d\alpha}{dt}
+\end{equation}
+
+La tension induite totale est ainsi composée de deux contributions :
+\begin{itemize}
+    \item $L\,\frac{di}{dt}$ : tension induite de transformation (auto-induction),
+    \item $N\,\frac{d\Phi_{ba}}{d\alpha}\,\Omega$ : tension induite de mouvement.
+\end{itemize}
+
+Afin de déterminer les paramètres électriques $R$ et $L$, l’actionneur est maintenu immobile ($\Omega = 0$), ce qui permet de négliger la tension induite de mouvement. L’équation se simplifie alors en :
+\begin{equation}
+u(t) = R\,i(t) + L\,\frac{di(t)}{dt}
+\end{equation}
+
+Ce système correspond à un circuit du premier ordre. Dans le domaine de Laplace, on obtient :
+\begin{equation}
+U(s) = (R + Ls)\,I(s)
+\end{equation}
+
+d’où la fonction de transfert entre la tension appliquée et le courant :
+\begin{equation}
+G(s) = \frac{I(s)}{U(s)} = \frac{1}{R + Ls} = \frac{1/R}{1 + s\,\frac{L}{R}}
+\end{equation}
+
+Le gain en régime permanent est alors exprimé par :
+\begin{equation}
+G(0) = \frac{1}{R}
+\label{eq:calc_gain}
+\end{equation}
+
+La réponse du courant à un échelon de tension $U_0$ est donnée par :
+\begin{equation}
+i(t) = \frac{U_0}{R} \left(1 - e^{-t/\tau} \right)
+\end{equation}
+
+où la constante de temps vaut :
+\begin{equation}
+\tau = \frac{L}{R}
+\label{eq:calc_tau}
+\end{equation}
+
+Ainsi, le courant atteint environ $63\%$ de sa valeur finale $i_\infty = \frac{U_0}{R}$ au temps $t = \tau$. Le système étudié est donc un système du premier ordre caractérisé par un gain statique $\frac{1}{R}$ et une constante de temps $\tau = \frac{L}{R}$.
+
+\subsection{Analyse de la réponse libre en circuit ouvert}
+
+Dans cette configuration, l'enroulement est laissé ouvert, ce qui implique un courant nul ($i = 0$). Par conséquent, le couple électromagnétique est nul ($T_{em} = K_T \cdot i = 0$). Le mouvement de l'actionneur est alors régi uniquement par le moment d'inertie de la partie mobile, le ressort de rappel et les forces de frottement visqueux.
+
+\subsubsection{Équation différentielle du mouvement}
+
+En appliquant le principe fondamental de la dynamique en rotation à la partie mobile, nous établissons l'équilibre des couples :
+\begin{equation}
+J \cdot \frac{d\Omega(t)}{dt} = \sum T = -K_r \cdot \alpha(t) - C_v \cdot \Omega(t)
+\end{equation}
+
+En utilisant les relations cinématiques $\Omega = \frac{d\alpha}{dt}$ et $a = \frac{d^2\alpha}{dt^2} = \frac{d\Omega}{dt}$, nous pouvons exprimer cette équation sous la forme d'une équation différentielle du second ordre en $\Omega(t)$ en dérivant l'expression précédente par rapport au temps :
+\begin{equation}
+J \cdot \ddot{\Omega} + C_v \cdot \dot{\Omega} + K_r \cdot \Omega = 0
+\end{equation}
+
+La forme canonique de cette équation est la suivante :
+\begin{equation}
+\ddot{\Omega} + 2\delta \cdot \dot{\Omega} + \omega_n^2 \cdot \Omega = 0
+\end{equation}
+
+Par identification, nous définissons le coefficient d'amortissement $\delta$ et la pulsation propre non amortie $\omega_n$ :
+\begin{itemize}
+    \item $2\delta = \frac{C_v}{J} \implies \delta = \frac{C_v}{2J}$
+    \item $\omega_n^2 = \frac{K_r}{J} \implies \omega_n = \sqrt{\frac{K_r}{J}}$
+\end{itemize}
+
+\subsubsection{Résolution et expression de la tension induite}
+
+Le système étant faiblement amorti ($\omega_n^2 - \delta^2 > 0$), la solution générale pour la vitesse angulaire est de type pseudo-périodique :
+\begin{equation}
+\Omega(t) = e^{-\delta t} \left[ C_1 \cos(\omega_0 t) + C_2 \sin(\omega_0 t) \right]
+\end{equation}
+
+Avec la pulsation amortie $\omega_0 = \sqrt{\omega_n^2 - \delta^2}$. En considérant les conditions initiales où l'actuateur est lâché depuis une position extrême $\Delta\alpha_{max}$ sans vitesse initiale ($\Omega(0) = 0$), la solution se simplifie :
+\begin{equation}
+\Omega(t) = -\frac{\omega_n^2}{\omega_0} \cdot \Delta\alpha_{max} \cdot e^{-\delta t} \cdot \sin(\omega_0 t)
+\end{equation}
+
+La tension induite de mouvement $u_{im}(t)$ mesurée aux bornes de la bobine ouverte est donnée par la relation $u_{im} = K_u \cdot \Omega$. Elle s'exprime donc par :
+\begin{equation}
+u_{im}(t) = -K_u \cdot \frac{\omega_n^2}{\omega_0} \cdot \Delta\alpha_{max} \cdot e^{-\delta t} \cdot \sin(\omega_0 t)
+\end{equation}
+
+
+\subsubsection{Méthode d'identification expérimentale}
+
+La mesure de la tension induite à l'oscilloscope permet d'extraire les paramètres mécaniques et électromagnétiques du modèle :
+
+\begin{enumerate}
+    \item \textbf{L'amortissement $\delta$} est obtenu par le décrément logarithmique entre deux crêtes successives de tension $\hat{U}_1$ et $\hat{U}_2$ séparées d'une pseudo-période $T_0$ :
+    \begin{equation}
+    \delta = \frac{1}{T_0} \ln\left( \frac{\hat{U}_1}{\hat{U}_2} \right)
+    \label{eq:calc_delta}
+    \end{equation}
+
+    \item \textbf{La pulsation amortie $\omega_0$} est calculée à partir de la période mesurée : 
+    \begin{equation}
+    \omega_0 = \frac{2\pi}{T_0}
+    \label{eq:calc_omega0}
+    \end{equation}
+
+    \item \textbf{La pulsation propre $\omega_n$} est déduite par la relation : 
+    \begin{equation}
+    \omega_n = \sqrt{\omega_0^2 + \delta^2}
+    \label{eq:calc_omegan}
+    \end{equation}
+
+    \item \textbf{La constante de tension induite $K_u$} est isolée à partir de l'amplitude de la première crête $\hat{U}_1$ (mesurée à $t \approx T_0/4$). En réarrangeant l'expression de la tension induite, nous obtenons la formule d'identification suivante :
+    \begin{equation}
+    K_u = \frac{\hat{U}_1 \cdot \omega_0}{\omega_n^2 \cdot |\alpha_0| \cdot e^{-\delta \cdot \frac{T_0}{4}}}
+    \label{eq:calc_ku}
+    \end{equation}
+    Où $\alpha_0$ correspond à la position angulaire initiale ($\Delta\alpha_{max}$).
+\end{enumerate}
+
+Cette analyse permet de quantifier les paramètres mécaniques par les rapports $C_v = 2\delta J$ et $K_r = \omega_n^2 J$. De plus, conformément à la théorie des machines électriques en unités SI, la constante de couple $K_T$ est directement identifiée par l'égalité $K_T = K_u$.
+
+\newpage
+
+
+\subsection{Analyse de la réponse libre en court-circuit}
+
+Dans cette seconde configuration, les bornes de la bobine sont court-circuitées ($u(t) = 0$). Le mouvement de la partie mobile génère alors un courant induit qui, par interaction avec le champ magnétique, produit un couple électromagnétique s'opposant au mouvement. Ce phénomène se traduit par un amortissement supplémentaire du système.
+
+\subsubsection{Modélisation du courant et du mouvement}
+
+D'après la loi de maille appliquée au circuit électrique avec une tension nulle, nous avons :
+\begin{equation}
+u(t) = R \cdot i(t) + L \cdot \frac{di(t)}{dt} + u_{im}(t) = 0
+\end{equation}
+
+En négligeant l'inductance de la bobine ($L \approx 0$) devant les constantes de temps mécaniques, le courant induit s'exprime par :
+\begin{equation}
+i(t) \approx -\frac{u_{im}(t)}{R} = -\frac{K_u \cdot \Omega(t)}{R}
+\end{equation}
+
+L'équilibre des couples agissant sur la partie mobile inclut désormais le couple électromagnétique $T_{em} = K_T \cdot i$. L'équation du mouvement devient :
+\begin{equation}
+J \cdot \dot{\Omega} = T_{em} - K_r \cdot \alpha - C_v \cdot \Omega = -\frac{K_T \cdot K_u}{R} \cdot \Omega - K_r \cdot \alpha - C_v \cdot \Omega
+\end{equation}
+
+En mettant cette expression sous forme canonique en $\Omega$, nous obtenons :
+\begin{equation}
+\ddot{\Omega} + 2\delta' \cdot \dot{\Omega} + \omega_n^2 \cdot \Omega = 0
+\end{equation}
+
+Où le nouveau coefficient d'amortissement $\delta'$ intègre l'effet du freinage électromagnétique :
+\begin{equation}
+2\delta' = \frac{C_v}{J} + \frac{K_T \cdot K_u}{R \cdot J}
+\end{equation}
+
+\subsubsection{Identification des paramètres de court-circuit}
+
+L'analyse du signal permet d'extraire les grandeurs temporelles caractéristiques de cet essai :
+\begin{enumerate}
+    \item \textbf{L'amortissement $\delta'$} : identifié via le décrément logarithmique du courant induit entre la première crête $\hat{I}_1$ et la seconde $\check{I}_1$ (ou crêtes successives) :
+    \begin{equation}
+    \delta' = \ln\left( \frac{\hat{I}_1}{\check{I}_1} \right) \cdot \frac{2}{T_0'}
+    \label{eq:calc_deltap}
+    \end{equation}
+    \item \textbf{La pulsation amortie $\omega_0'$} : calculée à partir de la pseudo-période mesurée sur le signal de courant :
+    \begin{equation}
+    \omega_0' = \frac{2\pi}{T_0'}
+    \label{eq:calc_omega0p}
+    \end{equation}
+\end{enumerate}
+
+\subsection{Identification expérimentale des paramètres physiques}
+
+Cette section détaille le calcul final des caractéristiques physiques de l'actionneur en combinant les résultats des essais en circuit ouvert ($\delta$, $\omega_n$) et en court-circuit ($\delta'$).
+
+\subsubsection{Calcul du moment d'inertie}
+
+L'augmentation de l'amortissement observée entre les deux essais est uniquement due au couple de freinage électromagnétique généré par le court-circuit. En comparant les formes canoniques obtenues pour le circuit ouvert (CO) et le court-circuit (CC), nous avons identifié les coefficients d'amortissement suivants :
+
+\begin{equation}
+2\delta = \frac{C_v}{J} \quad \text{(Essai CO)}
+\end{equation}
+
+\begin{equation}
+2\delta' = \frac{C_v}{J} + \frac{K_T \cdot K_u}{R \cdot J} \quad \text{(Essai CC)}
+\end{equation}
+
+En effectuant la soustraction de ces deux termes ($2\delta' - 2\delta$), nous isolons la contribution électromagnétique au sein de l'amortissement total :
+
+\begin{equation}
+2(\delta' - \delta) = \left( \frac{C_v}{J} + \frac{K_T \cdot K_u}{R \cdot J} \right) - \frac{C_v}{J} = \frac{K_T \cdot K_u}{R \cdot J}
+\end{equation}
+
+Dès lors, en isolant $J$ dans cette égalité, nous obtenons la relation permettant de déterminer le moment d'inertie de la partie mobile à partir des grandeurs identifiées lors des deux essais :
+
+\begin{equation}
+J = \frac{K_T \cdot K_u}{2 \cdot R \cdot (\delta' - \delta)}
+\label{eq:calc_J}
+\end{equation}
+
+
+\subsubsection{Détermination des constantes mécaniques}
+
+Une fois l'inertie $J$ connue, les paramètres de raideur et de frottement sont calculés de manière absolue :
+\begin{enumerate}
+    \item \textbf{Raideur du ressort ($K_r$)} : 
+    \begin{equation}
+    K_r = \omega_n^2 \cdot J
+    \label{eq:calc_Kr}
+    \end{equation}
+    \item \textbf{Coefficient de frottement visqueux ($C_v$)} :
+    \begin{equation}
+    C_v = 2 \cdot \delta \cdot J
+    \label{eq:calc_Cv}
+    \end{equation}
+\end{enumerate}
+
+L'ensemble des paramètres du modèle de connaissance est ainsi intégralement caractérisé.
+
+
+
+\newpage

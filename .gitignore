@@ -22,6 +22,8 @@ venv/
 *.aux
 *.bbl
 *.bcf
+*.lof
+*.lot
 *.blg
 *.fdb_latexmk
 *.fls
