@@ -1,15 +1,88 @@
 \section{Mesures et identification}
 
+\tikzset{
+  appareil/.style={draw, thick, rounded corners=3pt, align=center, minimum width=2.6cm, minimum height=1.35cm},
+  borne/.style={circle, fill=black!75, inner sep=1.7pt},
+  borneplus/.style={circle, fill=red!70!black, inner sep=1.7pt},
+  bornesig/.style={circle, fill=green!60!black, inner sep=1.7pt},
+  bornechun/.style={circle, fill=yellow!70!black, inner sep=1.7pt},
+  bornechdeux/.style={circle, fill=cyan!65!black, inner sep=1.7pt},
+  filpuissance/.style={thick, red!70!black},
+  filmasse/.style={thick, black!85},
+  filsignal/.style={thick, green!60!black},
+  filchun/.style={thick, yellow!70!black, densely dashed},
+  filchdeux/.style={thick, cyan!65!black, densely dashed}
+}
+
 \subsection{EX1 -- Paramètres électriques \texorpdfstring{\(R\)}{R} et \texorpdfstring{\(L\)}{L}}
 
 \subsubsection{Protocole}
 
 Un échelon de tension de \(\approx \SI{3{,}8}{V}\) est appliqué à la bobine via un signal carré périodique. Deux essais sont enregistrés :
 \begin{itemize}
-    \item \textbf{Essai maintenu} (\texttt{T0001ALL.CSV}) : la partie mobile est immobilisée mécaniquement, donc \(\dot{\alpha} = 0\) et la f.c.e.m. est nulle. C'est cet essai qui sert à l'identification de \(R\) et \(L\) selon \eqref{eq:i_RL}.
-    \item \textbf{Essai avec mouvement} (\texttt{T0000ALL.CSV}) : la partie mobile est libre. Cet essai permet de mettre en évidence l'effet de la f.c.e.m.\ sur la réponse en courant.
+    \item \textbf{Essai maintenu} : la partie mobile est immobilisée mécaniquement, donc \(\dot{\alpha} = 0\) et la f.c.e.m. est nulle. C'est cet essai qui sert à l'identification de \(R\) et \(L\) selon \eqref{eq:i_RL}.
+    \item \textbf{Essai avec mouvement} : la partie mobile est libre. Cet essai permet de mettre en évidence l'effet de la f.c.e.m.\ sur la réponse en courant.
 \end{itemize}
-La voie CH1 mesure la tension \(u(t)\) aux bornes de la bobine, la voie CH2 le courant \(i(t)\) issu de la sonde TCPA300/TCPA312 (gain \(\SI{1}{A/V}\)). L'amplitude est dimensionnée pour que \(i_{\max} < \SI{0,2}{A}\) (limite thermique). On mesure ici un courant stationnaire \(i_\infty \approx \SI{149}{mA} < \SI{200}{mA}\) : la condition est respectée.
+La voie CH1 mesure la tension \(u(t)\) à la sortie de l'amplificateur, c'est-à-dire la tension appliquée au montage bobine--sonde de courant. La voie CH2 mesure le courant \(i(t)\) issu de la sonde TCPA300/TCPA312 (gain \(\SI{1}{A/V}\)). L'amplitude est dimensionnée pour que \(i_{\max} < \SI{0,2}{A}\) (limite thermique). On mesure ici un courant stationnaire \(i_\infty \approx \SI{149}{mA} < \SI{200}{mA}\) : la condition est respectée.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=0.74, transform shape,
+  every node/.style={font=\small}]
+% Appareils
+\node[appareil] (alim) at (4.6,8.5) {Alimentation DC\\\scriptsize \(\pm\SI{30}{V}\)};
+\node[appareil] (gen) at (0,5.6) {Générateur\\\large \(\square\)};
+\node[appareil] (amp) at (4.6,5.6) {Amplificateur\\\scriptsize puissance};
+\node[appareil, minimum width=2.8cm] (sonde) at (8.8,5.6) {Sonde courant\\\scriptsize \(\SI{1}{A}/\SI{1}{V}\)};
+\node[appareil, minimum width=3.5cm, minimum height=2.0cm] (osc) at (6.6,1.45) {Oscilloscope\\\scriptsize DPO2014B};
+\node[appareil, minimum width=3.4cm, minimum height=2.2cm] (act) at (13.2,5.55) {};
+% Bornes alimentation
+\node[borneplus,label=below left:{\scriptsize \(+30\)}] (alimp) at (4.0,7.82) {};
+\node[borne,label=below:{\scriptsize 0V}] (alim0) at (4.6,7.82) {};
+\node[circle, fill=blue!70!black, inner sep=1.7pt,label=below right:{\scriptsize \(-30\)}] (alimn) at (5.2,7.82) {};
+% Bornes generateur
+\node[bornesig] (gout) at (1.3,5.95) {};
+\node[borne] (gcom) at (1.3,5.25) {};
+\node[font=\scriptsize, anchor=south] at (1.42,6.10) {out};
+\node[font=\scriptsize, anchor=north] at (1.40,5.02) {com};
+% Bornes ampli
+\node[bornesig] (ain) at (3.3,5.95) {};
+\node[borneplus] (aout) at (5.9,5.95) {};
+\node[font=\scriptsize, anchor=east] at (3.18,6.10) {IN};
+\node[borne] (a0) at (4.6,4.92) {};
+\node[borneplus,label=above left:{\scriptsize \(+30\)}] (ap) at (4.0,6.28) {};
+\node[circle, fill=blue!70!black, inner sep=1.7pt,label=above right:{\scriptsize \(-30\)}] (an) at (5.2,6.28) {};
+% Bornes sonde
+\node[borne] (sin) at (7.4,5.95) {};
+\node[borne] (sout) at (10.2,5.95) {};
+\node[bornechdeux] (ssig) at (8.8,4.92) {};
+\node[font=\scriptsize, anchor=west] at (10.32,6.15) {OUT};
+\node[font=\scriptsize, anchor=west] at (8.95,4.72) {sig};
+% Oscillo
+\node[bornechun] (ch1) at (5.55,2.45) {};
+\node[bornechdeux] (ch2) at (7.65,2.45) {};
+\node[font=\scriptsize, anchor=east] at (5.42,2.65) {CH1};
+\node[font=\scriptsize, anchor=west] at (7.78,2.65) {CH2};
+% Actuateur stylise
+\node[borneplus,label=left:{\scriptsize \(+\)}] (bp) at (11.5,5.95) {};
+\node[borne,label=left:{\scriptsize \(-\)}] (bm) at (11.5,5.15) {};
+\node[font=\small, align=center] at (13.2,5.55) {Actionneur\\VCM};
+% Cablage puissance et signaux
+\draw[filpuissance] (alimp) -- (ap);
+\draw[thick, blue!70!black] (alimn) -- (an);
+\draw[filmasse] (alim0) -- (4.6,7.35) -- (2.0,7.35) -- (2.0,5.25) -- (gcom);
+\draw[filsignal] (gout) -- (ain);
+\draw[filmasse] (gcom) -- (1.8,5.25) -- (1.8,4.35) -- (4.6,4.35) -- (a0);
+\draw[filpuissance] (aout) -- (sin);
+\draw[filpuissance] (sout) -- (bp);
+\draw[filmasse] (bm) -- (11.0,5.15) -- (11.0,4.35) -- (4.4,4.35);
+\draw[filchun] (ch1) -- (5.55,3.3) -- (6.2,3.3) -- (6.2,5.95);
+\draw[filchdeux] (ch2) -- (7.65,3.55) -- (8.8,3.55) -- (ssig);
+\filldraw[yellow!70!black] (6.2,5.95) circle (2.3pt);
+\end{tikzpicture}
+\caption{EX1 -- Montage de mesure de la réponse indicielle. CH1 est branchée sur la sortie de l'amplificateur, CH2 sur la sortie de la sonde de courant.}
+\label{fig:schema_ex1}
+\end{figure}
 
 \subsubsection{Vue d'ensemble des deux essais}
 
@@ -54,7 +127,7 @@ La constante de temps \(\tau_{el}\) est extraite par régression log-linéaire s
 \end{figure}
 
 \subsubsection{Résultats EX1}
-
+<
 \begin{table}[H]
 \centering
 \caption{Résultats de l'identification \(R\) et \(L\) (EX1)}
@@ -62,8 +135,8 @@ La constante de temps \(\tau_{el}\) est extraite par régression log-linéaire s
 \toprule
 Essai & \(R\) [\si{\ohm}] & \(\tau_{el}\) [\si{\micro s}] & \(L\) [\si{mH}] & Source \\
 \midrule
-Bloqué (T0001) & \textbf{25{,}31} & \textbf{121} & \textbf{3{,}07} & retenu \\
-Avec mouvement (T0000) & 24{,}21 & --- & --- & vérification\(^\dagger\) \\
+Bloqué & \textbf{25{,}31} & \textbf{121} & \textbf{3{,}07} & retenu \\
+Avec mouvement & 24{,}21 & --- & --- & vérification\(^\dagger\) \\
 \bottomrule
 \end{tabular}
 \label{tab:ex1}
@@ -75,11 +148,34 @@ Avec mouvement (T0000) & 24{,}21 & --- & --- & vérification\(^\dagger\) \\
 
 \subsubsection{Protocole}
 
-La partie mobile est portée à l'angle extrême \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree} = \SI{0{,}2985}{rad}\) puis relâchée brusquement, bobine en circuit ouvert. La tension induite \(u_{im}(t)\) est mesurée sur CH1. Deux essais sont réalisés (positions extrêmes droite et gauche) :
-\begin{itemize}
-    \item \texttt{T0002CH1.CSV} : essai droite ;
-    \item \texttt{T0003CH1.CSV} : essai gauche.
-\end{itemize}
+La partie mobile est portée à l'angle extrême \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree} = \SI{0{,}2985}{rad}\) puis relâchée brusquement, bobine en circuit ouvert. La tension induite \(u_{im}(t)\) est mesurée sur CH1. Deux essais sont réalisés, depuis les deux positions extrêmes de l'actionneur (droite et gauche).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=0.84, transform shape,
+  every node/.style={font=\small}]
+% Appareils
+\node[appareil, minimum width=3.5cm, minimum height=2.0cm] (osc) at (1.8,3.2) {Oscilloscope\\\scriptsize DPO2014B};
+\node[appareil, minimum width=4.0cm, minimum height=2.4cm] (act) at (8.2,3.2) {};
+% Oscillo
+\node[bornechun] (ch1) at (3.55,3.55) {};
+\node[bornechdeux] (ch2) at (3.55,2.85) {};
+\node[font=\scriptsize, anchor=south west] at (3.67,3.63) {CH1};
+\node[font=\scriptsize, anchor=north west] at (3.67,2.74) {CH2 libre};
+% Actuateur
+\node[borneplus,label=left:{\scriptsize \(+\)}] (bp) at (6.2,3.65) {};
+\node[borne,label=left:{\scriptsize \(-\)}] (bm) at (6.2,2.85) {};
+\node[font=\small, align=center] at (8.2,3.25) {Actionneur\\VCM};
+% Sonde tension
+\draw[filchun] (ch1) -- (5.35,3.55) -- (bp);
+\draw[filmasse, densely dashed] (3.55,3.15) -- (5.15,3.15) -- (5.15,2.85) -- (bm);
+\node[font=\scriptsize, align=center, anchor=south] at (4.85,3.88) {sonde de\\tension};
+\draw[->, yellow!70!black, thick] (5.15,3.82) -- (5.82,3.64);
+\node[font=\scriptsize, anchor=north] at (8.25,2.32) {bobine ouverte};
+\end{tikzpicture}
+\caption{EX2 -- Montage de mesure de la tension induite en bobine ouverte.}
+\label{fig:schema_ex2}
+\end{figure}
 
 Le traitement consiste à :
 \begin{enumerate}
@@ -133,8 +229,8 @@ L'expression analytique \eqref{eq:uim_t} est tracée avec les paramètres identi
 \toprule
 Essai & \(\delta\) [\si{rad/s}] & \(\omega_0\) [\si{rad/s}] & \(C_v/J\) [\si{s^{-1}}] & \(K_r/J\) [\si{rad^2.s^{-2}}] \\
 \midrule
-Droite (T0002) & 3{,}11 & 117{,}99 & 6{,}22 & \(1{,}393\times10^{4}\) \\
-Gauche (T0003) & 3{,}24 & 117{,}82 & 6{,}48 & \(1{,}388\times10^{4}\) \\
+Droite & 3{,}11 & 117{,}99 & 6{,}22 & \(1{,}393\times10^{4}\) \\
+Gauche & 3{,}24 & 117{,}82 & 6{,}48 & \(1{,}388\times10^{4}\) \\
 \midrule
 \textbf{Moyenne} & \textbf{3{,}18} & \textbf{117{,}91} & \textbf{6{,}35} & \(\mathbf{1{,}391\times10^{4}}\) \\
 \bottomrule
@@ -164,7 +260,41 @@ est largement supérieur à 1, ce qui justifie a posteriori la simplification \(
 
 \subsubsection{Protocole}
 
-Même procédure que EX2 mais les bornes de la bobine sont court-circuitées via la sonde de courant. Le courant induit dissipe une puissance supplémentaire dans \(R\), augmentant l'amortissement apparent à la valeur \(\delta'\). Les fichiers \texttt{T0004CH1.CSV} (droite) et \texttt{T0005CH1.CSV} (gauche) contiennent le courant \(i(t)\) (CH1, gain \(\SI{1}{A/V}\)).
+Même procédure que EX2 mais les bornes de la bobine sont court-circuitées via la sonde de courant. Le courant induit dissipe une puissance supplémentaire dans \(R\), augmentant l'amortissement apparent à la valeur \(\delta'\). Deux essais sont réalisés depuis les deux positions extrêmes, et le courant \(i(t)\) est mesuré sur CH1 avec le gain \(\SI{1}{A/V}\).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=0.84, transform shape,
+  every node/.style={font=\small}]
+% Appareils
+\node[appareil, minimum width=2.8cm] (sonde) at (1.7,4.6) {Sonde courant\\\scriptsize \(\SI{1}{A}/\SI{1}{V}\)};
+\node[appareil, minimum width=3.5cm, minimum height=2.0cm] (osc) at (1.7,1.4) {Oscilloscope\\\scriptsize DPO2014B};
+\node[appareil, minimum width=4.0cm, minimum height=2.4cm] (act) at (8.2,3.2) {};
+% Sonde
+\node[borne] (sin) at (0.3,4.85) {};
+\node[borne] (sout) at (3.1,4.85) {};
+\node[bornechun] (ssig) at (1.7,3.92) {};
+\node[font=\scriptsize, anchor=east] at (0.18,4.85) {IN};
+\node[font=\scriptsize, anchor=south west] at (3.22,5.02) {OUT};
+\node[font=\scriptsize, anchor=west] at (1.86,3.82) {sig};
+% Oscillo
+\node[bornechun] (ch1) at (1.0,2.4) {};
+\node[bornechdeux] (ch2) at (2.4,2.4) {};
+\node[font=\scriptsize, anchor=east] at (0.88,2.60) {CH1};
+\node[font=\scriptsize, anchor=west] at (2.52,2.60) {CH2 libre};
+% Actuateur
+\node[borneplus,label=left:{\scriptsize \(+\)}] (bp) at (6.2,3.65) {};
+\node[borne,label=left:{\scriptsize \(-\)}] (bm) at (6.2,2.85) {};
+\node[font=\small, align=center] at (8.2,3.25) {Actionneur\\VCM};
+% Court-circuit par sonde de courant
+\draw[filpuissance] (bp) -- (5.55,3.65) -- (5.55,4.85) -- (sout);
+\draw[filmasse] (sin) -- (0.0,4.85) -- (0.0,2.85) -- (bm);
+\draw[filchun] (ch1) -- (1.0,3.15) -- (ssig);
+\node[font=\scriptsize, align=center, anchor=south] at (4.35,5.35) {bobine court-circuitée\\par la sonde de courant};
+\end{tikzpicture}
+\caption{EX3 -- Montage de mesure du courant induit en bobine court-circuitée.}
+\label{fig:schema_ex3}
+\end{figure}
 
 \subsubsection{Signaux et pics détectés}
 
@@ -207,8 +337,8 @@ Même procédure que EX2 mais les bornes de la bobine sont court-circuitées via
 \toprule
 Essai & \(\delta'\) [\si{rad/s}] & \(\omega_0'\) [\si{rad/s}] & \(\omega_n' \) [\si{rad/s}] & \((C_v + K_u^2/R)/J\) [\si{s^{-1}}] \\
 \midrule
-Droite (T0004)  & 18{,}26 & 96{,}93  & 98{,}63  & 36{,}51 \\
-Gauche (T0005)  & 34{,}08 & 112{,}25 & 117{,}31 & 68{,}16 \\
+Droite  & 18{,}26 & 96{,}93  & 98{,}63  & 36{,}51 \\
+Gauche  & 34{,}08 & 112{,}25 & 117{,}31 & 68{,}16 \\
 \midrule
 \textbf{Moyenne} & \textbf{26{,}17} & \textbf{104{,}59} & \textbf{107{,}97} & \textbf{52{,}33} \\
 \bottomrule

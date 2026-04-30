@@ -19,12 +19,11 @@ Trois expériences complémentaires sont menées pour identifier ces six paramè
     \item \textbf{EX3} -- oscillations libres, bobine court-circuitée : extraction de \(J\), \(C_v\) et \(K_r\) par comparaison avec EX2.
 \end{itemize}
 
-Les acquisitions sont réalisées à l'oscilloscope Tektronix DPO2014B. Chaque fichier contient \(125\,000\) points par voie, mais avec une base de temps adaptée à l'essai afin de couvrir soit la dynamique électrique rapide, soit la dynamique mécanique lente. Les données brutes au format CSV sont post-traitées en Python dans le notebook \texttt{traitement.ipynb}, qui contient toute la chaîne d'analyse (chargement, détection des fronts, fit exponentiel, détection des extrema oscillants, calcul des paramètres et superpositions mesure/modèle).
+Les acquisitions sont réalisées à l'oscilloscope Tektronix DPO2014B. Chaque essai contient \(125\,000\) points par voie, avec une base de temps adaptée afin de couvrir soit la dynamique électrique rapide, soit la dynamique mécanique lente. Les mesures sont post-traitées en Python : détection des fronts, fit exponentiel, détection des extrema oscillants, calcul des paramètres et superpositions mesure/modèle.
 
 \paragraph{Données de l'actionneur.}
 L'angle de déflexion maximal est \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree} = \SI{0{,}2985}{rad}\). Pour le calcul du nombre de spires, l'induction dans l'entrefer est \(B = \SI{0{,}45}{T}\), avec un rayon extérieur de la bobine de \(\SI{30}{mm}\) et un rayon intérieur de \(\SI{15}{mm}\). Le courant doit rester inférieur à \(\SI{0{,}2}{A}\) pour des raisons thermiques.
 
-\paragraph{Conditions de mesure.}
 \begin{table}[H]
 \centering
 \caption{Bases de temps des acquisitions}
@@ -32,33 +31,15 @@ L'angle de déflexion maximal est \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree} =
 \toprule
 Essai & Pas temporel & Durée enregistrée \\
 \midrule
-EX1 bloqué (T0001ALL) & \(\SI{8}{ns}\) & \(\SI{1}{ms}\) \\
-EX1 libre (T0000ALL) & \(\SI{800}{ns}\) & \(\SI{100}{ms}\) \\
-EX2 ouvert (T0002/T0003) & \(\SI{3{,}2}{\micro s}\) & \(\SI{400}{ms}\) \\
-EX3 court-circuité (T0004/T0005) & \(\SI{1{,}6}{\micro s}\) & \(\SI{200}{ms}\) \\
+EX1, actionneur bloqué & \(\SI{8}{ns}\) & \(\SI{1}{ms}\) \\
+EX1, actionneur libre & \(\SI{800}{ns}\) & \(\SI{100}{ms}\) \\
+EX2, bobine ouverte & \(\SI{3{,}2}{\micro s}\) & \(\SI{400}{ms}\) \\
+EX3, bobine court-circuitée & \(\SI{1{,}6}{\micro s}\) & \(\SI{200}{ms}\) \\
 \bottomrule
 \end{tabular}
 \label{tab:conditions_time}
 \end{table}
 
-\begin{table}[H]
-\centering
-\caption{Réglages et limites communes}
-\begin{tabular}{p{0.37\textwidth}p{0.52\textwidth}}
-\toprule
-Longueur d'enregistrement & \(125\,000\) points par voie \\
-Sonde de courant & Tektronix TCPA300/TCPA312, gain \(\SI{1}{A/V}\) \\
-Gain CH1 (tension) & EX1 : \(\SI{1}{V/div}\) ; EX2/3 : \(\SI{1}{V/div}\) \\
-Gain CH2 (courant) & EX1 : \(\SI{50}{mV/div}\) (sonde \(\SI{1}{A/V}\)) \\
-Échelon de tension EX1 & \(\approx \SI{3{,}8}{V}\), signal carré périodique \\
-Courant maximal mesuré & \(\approx \SI{149}{mA}\) (\(<\SI{200}{mA}\) : OK) \\
-Lâcher EX2/EX3 & manuel depuis \(\Delta\alpha_{\max}\), bobine ouverte / court-circuitée \\
-\bottomrule
-\end{tabular}
-\label{tab:conditions}
-\end{table}
-
-\paragraph{Appareillage utilisé.}
 \begin{table}[H]
 \centering
 \caption{Instruments utilisés}
@@ -71,7 +52,7 @@ Sonde de courant    & Tektronix TCPA300 / TCPA312 (gain \(\SI{1}{A/V}\)) \\
 Alimentation DC     & GW INSTEK PPE-3323 \\
 Générateur de fonction & GW AFG 2005 \\
 Amplificateur de puissance & HEIG-VD / iAi \\
-Actionneur          & VCM à déflexion limitée, \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree}\) \\
+Actionneur          & N 11, \(\Delta\alpha_{\max} = \SI{17{,}1}{\degree}\) \\
 Logiciel d'analyse  & Python 3.14.4 (numpy, pandas, matplotlib) \\
 \bottomrule
 \end{tabular}

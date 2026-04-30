@@ -17,7 +17,7 @@ venv/
 
 # Jupyter
 .ipynb_checkpoints/
-
+.codex
 # LaTeX build artifacts
 *.aux
 *.bbl

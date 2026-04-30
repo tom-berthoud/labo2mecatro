@@ -6,6 +6,50 @@ L'actionneur étudié est un transducteur électrodynamique à déflexion angula
 
 \begin{figure}[H]
 \centering
+\begin{tikzpicture}[>=Stealth, scale=0.92, transform shape,
+  every node/.style={font=\small}]
+% Repere et rayons
+\coordinate (O) at (0,0);
+\draw[thick] (O) -- (118:2.4);
+\draw[thick] (O) -- (62:2.4);
+\draw[densely dashed] (O) -- (90:2.8);
+\filldraw[black] (O) circle (1.2pt) node[below=2pt] {\scriptsize axe};
+% Aimants et entrefer
+\draw[very thick, cyan!70!black] (118:1.55) arc (118:62:1.55);
+\draw[very thick, cyan!70!black] (118:2.25) arc (118:62:2.25);
+\draw[very thick, cyan!70!black] (118:1.55) -- (118:2.25);
+\draw[very thick, cyan!70!black] (62:1.55) -- (62:2.25);
+\node[font=\scriptsize, cyan!60!black] at (111:1.9) {N};
+\node[font=\scriptsize, cyan!60!black] at (69:1.9) {S};
+% Bobine mobile
+\draw[very thick, orange!85!black] (104:1.72) arc (104:76:1.72);
+\draw[very thick, orange!85!black] (104:2.08) arc (104:76:2.08);
+\draw[very thick, orange!85!black] (104:1.72) -- (104:2.08);
+\draw[very thick, orange!85!black] (76:1.72) -- (76:2.08);
+\foreach \ang in {80,85,90,95,100} {
+  \draw[orange!85!black] (\ang:1.73) -- (\ang:2.07);
+}
+% Couple
+\draw[->, thick, red!85!black] (0,2.75) arc (90:54:2.75)
+  node[pos=0.72,above right] {\(F_{l}\)};
+\node[font=\scriptsize] at (1.15,1.25) {\(R_i\)};
+\node[font=\scriptsize] at (1.45,1.95) {\(R_e\)};
+\draw[<->, thick] (-2.8,1.55) -- (-2.8,2.25) node[midway,left] {\(\ell=R_e-R_i\)};
+% Equations
+\node[align=left, anchor=west] at (3.1,2.3) {\(F_L = B\,\ell\,i = B(R_e-R_i)i\)};
+\node[align=left, anchor=west] at (3.1,1.25)
+{\(T_{em}=2\frac{R_e+R_i}{2}F_LN\)};
+\node[align=left, anchor=west] at (3.1,0.35)
+{\(T_{em}=B(R_e^2-R_i^2)N\,i=K_t i\)};
+\node[align=left, anchor=west] at (3.1,-0.65)
+{\(u_{im}=K_u\Omega,\qquad K_u=K_t\)};
+\end{tikzpicture}
+\caption{Principe électromagnétique de l'actionneur à bobine mobile.}
+\label{fig:actionneur_principe}
+\end{figure}
+
+\begin{figure}[H]
+\centering
 \begin{tikzpicture}[>=Stealth, node distance=1.5cm]
 % Bloc électrique
 \draw[thick, rounded corners=4pt] (0,0) rectangle (3.2,2.2);
@@ -69,6 +113,11 @@ Ce résultat est cohérent avec le bilan énergétique \(P_{m\acute{e}c} = T_{em
 
 \subsubsection{Équation électrique}
 
+La relation électrique peut se voir comme une loi d'Ohm généralisée :
+\[
+u(t) = R\,i(t) + \frac{d\psi}{dt}, \qquad \psi = L\,i(t) + \psi_m(\alpha).
+\]
+Le terme \(d\psi_m/dt\) correspond à la tension induite de mouvement. Comme \(\dot\alpha = \Omega\), il vaut \(K_u\,\dot{\alpha}(t)\).
 La loi des mailles sur le circuit de la bobine donne :
 \begin{equation}
 u(t) \;=\; R\,i(t) \;+\; L\,\frac{di}{dt} \;+\; K_u\,\dot{\alpha}(t),
@@ -104,6 +153,12 @@ L'actionneur est maintenu mécaniquement (\(\dot{\alpha} = 0\)). La f.c.e.m.\ es
 \[
 u(t) \;=\; R\,i(t) \;+\; L\,\frac{di}{dt}.
 \]
+Dans le domaine de Laplace, pour conditions initiales nulles :
+\[
+G_{el}(s) = \frac{I(s)}{U(s)} = \frac{1}{R + Ls}
+= \frac{1}{R}\,\frac{1}{1 + sL/R}.
+\]
+Le gain statique vaut donc \(1/R\), et la constante de temps vaut \(\tau_{el}=L/R\).
 La réponse à un échelon \(u_0\) est :
 \begin{equation}
 i(t) \;=\; \frac{u_0}{R}\,\bigl(1 - e^{-t/\tau_{el}}\bigr), \qquad \tau_{el} = \frac{L}{R}.
