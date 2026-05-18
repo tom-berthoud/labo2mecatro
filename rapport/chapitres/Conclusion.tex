@@ -10,15 +10,15 @@ La comparaison avec l'essai libre met clairement en évidence l'effet de la f.c.
 
 Les oscillations libres en circuit ouvert (EX2) donnent un coefficient d'amortissement visqueux \(\delta = \SI{3{,}18}{rad/s}\) et une pseudo-pulsation \(\omega_0 = \SI{117{,}9}{rad/s}\) (\(\simeq \omega_n\) puisque \(\omega_n/\delta \approx 37 \gg 1\)). L'enveloppe au moment du lâcher fournit la constante électromécanique :
 \[
-K_u = K_t \approx \SI{71{,}3e-3}{V.s/rad}.
+K_u = K_t \approx \SI{71{,}4e-3}{V.s/rad}.
 \]
 La très bonne reproductibilité droite/gauche (\(<4\,\%\) sur \(\delta\) et \(<0{,}2\,\%\) sur \(\omega_0\)) valide la dynamique mécanique identifiée.
 
 La comparaison EX2 / EX3 (bobine court-circuitée) fournit l'inertie via l'augmentation d'amortissement induite par le freinage électromagnétique \(K_u^2/R\) :
 \[
-J = \frac{K_u^2}{2R(\delta' - \delta)} \approx \SI{4{,}37e-6}{kg.m^2},
+J = \frac{K_u^2}{2R(\delta' - \delta)} \approx \SI{4{,}38e-6}{kg.m^2},
 \]
-puis \(C_v \approx \SI{2{,}78e-5}{N.m.s/rad}\) et \(K_r \approx \SI{6{,}08e-2}{N.m/rad}\). La pulsation propre en court-circuit est moins reproductible qu'en circuit ouvert : l'essai gauche retrouve \(\omega_n' \approx \SI{117}{rad/s}\), alors que l'essai droite tombe à \(\SI{99}{rad/s}\). La valeur de \(K_r\) est donc calculée à partir de \(\omega_n\) d'EX2, plus fiable. Le ratio \(\omega_n/\delta' \approx 4{,}5\) en court-circuit est nettement plus faible qu'en circuit ouvert, ce qui révèle que le freinage électromagnétique est dominant devant le frottement visqueux mécanique (facteur \(7\)).
+puis \(C_v \approx \SI{2{,}79e-5}{N.m.s/rad}\) et \(K_r \approx \SI{6{,}09e-2}{N.m/rad}\). La pulsation propre en court-circuit est moins reproductible qu'en circuit ouvert : l'essai gauche retrouve \(\omega_n' \approx \SI{117}{rad/s}\), alors que l'essai droite tombe à \(\SI{99}{rad/s}\). La valeur de \(K_r\) est donc calculée à partir de \(\omega_n\) d'EX2, plus fiable. Le ratio \(\omega_n/\delta' \approx 4{,}5\) en court-circuit est nettement plus faible qu'en circuit ouvert, ce qui révèle que le freinage électromagnétique est dominant devant le frottement visqueux mécanique (facteur \(7\)).
 
 Le calcul du nombre de spires à partir de \(K_t = N\,B\,(r_{ext}^2 - r_{int}^2)\) donne \(N \approx 235\), valeur typique d'un VCM miniature. La séparation des constantes de temps (\(\tau_{el}/\tau_{m\acute{e}c} \approx 4\!\times\!10^{-4}\)) justifie a posteriori l'hypothèse \(L\,di/dt \approx 0\) utilisée pour passer de l'équation électrique à \(i(t) \approx -K_u/R\,\dot\alpha(t)\) en EX3.
 
